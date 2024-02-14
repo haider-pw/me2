@@ -1,0 +1,12 @@
+{
+  "title": "Walls and Floors VSF 1.x",
+  "description": null,
+  "demoUrl": "https://www.tilemountain.co.uk",
+  "githubRepo": null,
+  "startedAt": "2021",
+  "deliveredAt": "2022-03-08",
+  "company": "Tile Mountain",
+  "tech": "vue2,vuestorefront,javacript,magento2,axios,analytics,rest-api,elasticsearch,graphql",
+  "imageSrc": "/img/content/projects/waf/waf.webp",
+  "imageAlt": "Walls and Floors website homepage"
+}

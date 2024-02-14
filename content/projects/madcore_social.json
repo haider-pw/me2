@@ -1,0 +1,11 @@
+{
+  "title": "Madcore Social",
+  "description": "A Jomsocial Site,\nDeveloped a Plugin to social login from Github/Bitbucket\nand After getting Logged In their Public Repositories are being showed on their Profile Page,\nWhere User can change to what Repositories needed to be shown on the Page, and What should be kept private for thier own eyes.",
+  "demoUrl": null,
+  "githubRepo": "",
+  "startedAt": null,
+  "deliveredAt": "2017:04:01",
+  "company": "Creativetech Solutions",
+  "tech": "php,git,javascrip,ajax,jomsocial,github,bitbucket,oauth",
+  "imageAlt": "Madcore Social"
+}

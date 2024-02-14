@@ -1,0 +1,12 @@
+{
+  "title": "Billfolda",
+  "description": null,
+  "demoUrl": "https://billfolda.com",
+  "githubRepo": null,
+  "startedAt": "2017",
+  "deliveredAt": "2018-07-01",
+  "company": "Creativetech Solutions",
+  "tech": "php,laravel,javacript,jquery,axios",
+  "imageSrc": "/img/content/projects/billfolda/image.webp",
+  "imageAlt": "Billfolda website homepage"
+}

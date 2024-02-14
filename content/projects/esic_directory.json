@@ -1,0 +1,12 @@
+{
+  "title": "Esic Directory",
+  "description": null,
+  "demoUrl": "https://www.tilemountain.co.uk",
+  "githubRepo": null,
+  "startedAt": "2020",
+  "deliveredAt": "2020 (Still Maintaining)",
+  "company": "Creativetech Solutions",
+  "tech": "php,codeigniter 3.x,jquery",
+  "imageSrc": "/img/content/projects/esic/esic_directory.webp",
+  "imageAlt": "Tile Mountain website homepage"
+}
