@@ -1,0 +1,12 @@
+{
+  "title": "Tilemountain Vuestorefront 1.x",
+  "description": null,
+  "demoUrl": "https://www.tilemountain.co.uk",
+  "githubRepo": null,
+  "startedAt": "2020",
+  "deliveredAt": "2021-07-31",
+  "company": "Tile Mountain",
+  "tech": "vue2,vuestorefront,javacript,magento2,axios,analytics,rest-api,elasticsearch,graphql",
+  "imageSrc": "/img/content/projects/tilemountain/tilemountain.webp",
+  "imageAlt": "Tile Mountain website homepage"
+}

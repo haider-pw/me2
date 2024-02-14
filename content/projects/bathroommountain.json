@@ -1,0 +1,12 @@
+{
+  "title": "Bathroommountain Vuestorefront 1.x",
+  "description": null,
+  "demoUrl": "http://bathroommountain.co.uk",
+  "githubRepo": null,
+  "startedAt": "2020",
+  "deliveredAt": "2020-09-01",
+  "company": "Tile Mountain",
+  "tech": "vue2,vuestorefront,javacript,magento2,axios,analytics,rest-api,elasticsearch,graphql",
+  "imageSrc": "/img/content/projects/bathroommountain/image.webp",
+  "imageAlt": "Bathroom Mountain website homepage"
+}

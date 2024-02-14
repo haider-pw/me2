@@ -1,0 +1,12 @@
+{
+  "title": "Tiles247 VSF 1.x",
+  "description": "This is the first product that was built on the frontend team under my supervision after I joined TileMountain. Built using Vue storefront where backend is set as Magento 2.",
+  "demoUrl": "https://www.tiles247.co.uk",
+  "githubRepo": null,
+  "startedAt": "2020",
+  "deliveredAt": "2020-10-05",
+  "company": "Tile Mountain",
+  "tech": "vue2,vuestorefront,javacript,magento2,axios,analytics,rest-api,elasticsearch,graphql",
+  "imageSrc": "/img/content/projects/tiles247/tiles247.webp",
+  "imageAlt": "Tiles247 website homepage"
+}
