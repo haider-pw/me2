@@ -14,6 +14,7 @@ export const fetchPostsOrPost =
                perPage = null,
                username
            }: FetchPostsOrPostParams) => {
+        const {userAgent} = useDevice();
         // const $blog = useRuntimeConfig().public.blog;
         if (isOverview) {
             // Fetch all posts for the blog overview
@@ -22,11 +23,17 @@ export const fetchPostsOrPost =
             if (perPage) {
                 url += `&per_page=${perPage}`
             }
-            return $fetch(url)
-        } else {
-            // Fetch a single post by slug
-            return $fetch(`https://dev.to/api/articles/${username}/${postSlug}`)
+            return $fetch(url, {
+                headers: {
+                    'User-Agent': userAgent
+                }
+            })
         }
+        return $fetch(`https://dev.to/api/articles/${username}/${postSlug}`, {
+            headers: {
+                'User-Agent': userAgent
+            }
+        })
     };
 
 const formatDateTime = (timestamp, humanReadable = false) => {
