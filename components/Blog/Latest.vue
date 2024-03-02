@@ -42,7 +42,7 @@ const {
   isOverview: true,
   perPage: 2
 }), {
-  transform: (data) => transformDevToPostLists(data, true)
+  transform: transformDevToPostLists
 });
 
 console.log('dataWouldBe', posts);
