@@ -1,3 +1,0 @@
-# Blog Posts
-
-::blog-posts
