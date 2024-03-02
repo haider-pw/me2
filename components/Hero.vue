@@ -32,7 +32,7 @@
                   <IconLinkedin/>
                 </a>
               </div>
-              <a href="/resume.pdf" class="inline-flex items-center gap-2 bg-gray-500 text-white hover:bg-gray-800 hover:text-white font-mono py-0 px-4 rounded">
+              <a href="/resume.pdf" target="_blank" class="inline-flex items-center gap-2 bg-gray-500 text-white hover:bg-gray-800 hover:text-white font-mono py-0 px-4 rounded">
                 Download Resume <IconDownload class="text-white" />
               </a>
             </div>
