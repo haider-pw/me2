@@ -34,15 +34,17 @@
 </template>
 
 <script setup>
+const $blog = useRuntimeConfig().public.blog;
 const {
   data: posts,
   pending,
   error
 } = await useAsyncData('postsOrPost', async () => await fetchPostsOrPost({
   isOverview: true,
+  username: $blog.user,
   perPage: 2
 }), {
-  transform: transformDevToPostLists
+  transform: (data) => transformDevToPostLists(data, true)
 });
 
 console.log('dataWouldBe', posts);

@@ -9,6 +9,7 @@
 
 <script setup>
 const route = useRoute()
+const $blog = useRuntimeConfig().public.blog;
 const isBlogOverview = computed(() => route.fullPath === '/blog' || route.fullPath === '/blog/');
 const slug = computed(() => {
   return route.fullPath.split('/').pop();
@@ -23,7 +24,8 @@ const {
   error
 } = await useAsyncData('postsOrPost', async () => await fetchPostsOrPost({
   isOverview: isBlogOverview.value,
-  postSlug: slug.value
+  postSlug: slug.value,
+  username: $blog.user
 }), {
   transform: transformDevToPostLists
 });

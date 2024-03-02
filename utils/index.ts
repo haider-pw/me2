@@ -1,11 +1,11 @@
 import {SymbolKind} from "vscode-languageserver-types";
 import Number = SymbolKind.Number;
 
-export const fetchPostsOrPost = async ({isOverview, postSlug = null, perPage = null}) => {
-    const $blog = useRuntimeConfig().public.blog;
+export const fetchPostsOrPost = async ({isOverview, postSlug = null, perPage = null, username}) => {
+    // const $blog = useRuntimeConfig().public.blog;
     if (isOverview) {
         // Fetch all posts for the blog overview
-        let url = `https://dev.to/api/articles?username=${$blog.user}`;
+        let url = `https://dev.to/api/articles?username=${username}`;
 
         if (perPage && typeof perPage === 'number') {
             url += `&per_page=${perPage}`
