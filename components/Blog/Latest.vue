@@ -41,7 +41,7 @@ const {
   error
 } = await useAsyncData('postsOrPost', async () => await fetchPostsOrPost({
   isOverview: true,
-  username: $blog.user,
+  username: $blog.user || 'yuridevat',
   perPage: 2
 }), {
   transform: (data) => transformDevToPostLists(data, true)

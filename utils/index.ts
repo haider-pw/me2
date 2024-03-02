@@ -10,7 +10,6 @@ export const fetchPostsOrPost = async ({isOverview, postSlug = null, perPage = n
         if (perPage && typeof perPage === 'number') {
             url += `&per_page=${perPage}`
         }
-
         return $fetch(url)
     } else {
         // Fetch a single post by slug
