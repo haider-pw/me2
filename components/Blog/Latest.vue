@@ -36,17 +36,6 @@
 <script setup>
 const $blog = useRuntimeConfig().public.blog;
 
-const {userAgent} = useDevice();
-
-const articles = await useFetch(`https://dev.to/api/articles?username=${$blog.user}`, {
-  key: 'customFetchingArticlesDev.to',
-  headers: {
-    'User-Agent': userAgent
-  }
-})
-
-console.log('articles', articles);
-
 const {
   data: posts,
   pending,
@@ -58,7 +47,5 @@ const {
 }), {
   transform: (data) => transformDevToPostLists(data, true)
 });
-
-console.log('dataWouldBe', posts);
 
 </script>

@@ -59,7 +59,7 @@ const formatDateTime = (timestamp, humanReadable = false) => {
 
         return {date, year};
     } catch (error) {
-        console.error("Error parsing timestamp:", error.message);
+        // console.error("Error parsing timestamp:", error.message);
         // Return null or some default value to indicate failure
         return {date: null, year: null};
     }

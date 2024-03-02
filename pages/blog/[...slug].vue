@@ -1,5 +1,4 @@
 <template>
-  <!--  <Blog :posts="posts"/>-->
   <component
       v-if="components[selectedComponent]"
       :is="components[selectedComponent].component"
