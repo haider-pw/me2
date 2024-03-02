@@ -19,16 +19,16 @@
 
             <div class="mt-6 flex items-center justify-between flex-col sm:flex-row">
               <div class="flex items-center gap-6 mb-5 sm:mb-0">
-                <a class="group -m-1 p-1" aria-label="Follow on X" href="#">
-                  <IconTwitter/>
-                </a>
-                <a class="group -m-1 p-1" aria-label="Follow on Instagram" href="#">
-                  <IconInstagram/>
-                </a>
-                <a class="group -m-1 p-1" aria-label="Follow on GitHub" href="#">
+<!--                <a class="group -m-1 p-1" aria-label="Follow on X" href="#">-->
+<!--                  <IconTwitter/>-->
+<!--                </a>-->
+<!--                <a class="group -m-1 p-1" aria-label="Follow on Instagram" href="#">-->
+<!--                  <IconInstagram/>-->
+<!--                </a>-->
+                <a class="group -m-1 p-1" aria-label="Follow on GitHub" href="https://www.linkedin.com/in/haider-pw/" target="_blank">
                   <IconGithub/>
                 </a>
-                <a class="group -m-1 p-1" aria-label="Follow on LinkedIn" href="#">
+                <a class="group -m-1 p-1" aria-label="Follow on LinkedIn" href="https://github.com/haider-pw" target="_blank">
                   <IconLinkedin/>
                 </a>
               </div>
