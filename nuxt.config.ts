@@ -3,7 +3,8 @@ export default defineNuxtConfig({
     devtools: {enabled: true},
     modules: [
         '@nuxtjs/tailwindcss',
-        '@nuxt/content'
+        '@nuxt/content',
+        '@nuxtjs/device',
     ],
     imports: {
         dirs: ['utils/**']
