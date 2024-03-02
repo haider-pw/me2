@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-16">
     <h2 class="text-2xl font-semibold text-zinc-800">
-      Latest on my blog
+      Latest on my blog {{$blog.user}}
     </h2>
     <article class="group relative flex flex-col items-start" v-for="post in posts" :key="post.id">
       <h2 class="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
