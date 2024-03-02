@@ -5,6 +5,9 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         '@nuxt/content'
     ],
+    imports: {
+        dirs: ['utils/**']
+    },
     runtimeConfig: {
         public: {
             blog: {
