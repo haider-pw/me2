@@ -1,22 +1,40 @@
 import {SymbolKind} from "vscode-languageserver-types";
-import Number = SymbolKind.Number;
 
-export const fetchPostsOrPost = async ({isOverview, postSlug = null, perPage = null, username}) => {
-    // const $blog = useRuntimeConfig().public.blog;
-    if (isOverview) {
-        // Fetch all posts for the blog overview
-        let url = `https://dev.to/api/articles?username=${username}`;
+interface FetchPostsOrPostParams {
+    isOverview: boolean;
+    postSlug?: string | null;
+    perPage?: number | null;
+    username: string;
+}
 
-        if (perPage && typeof perPage === 'number') {
-            url += `&per_page=${perPage}`
+export const fetchPostsOrPost =
+    async ({
+               isOverview,
+               postSlug = null,
+               perPage = null,
+               username
+           }: FetchPostsOrPostParams) => {
+        const {userAgent} = useDevice();
+        // const $blog = useRuntimeConfig().public.blog;
+        if (isOverview) {
+            // Fetch all posts for the blog overview
+            let url = `https://dev.to/api/articles?username=${username}`;
+
+            if (perPage) {
+                url += `&per_page=${perPage}`
+            }
+            return $fetch(url, {
+                headers: {
+                    'User-Agent': userAgent
+                }
+            })
         }
-
-        return $fetch(url)
-    } else {
-        // Fetch a single post by slug
-        return $fetch(`https://dev.to/api/articles/${$blog.user}/${postSlug}`)
-    }
-};
+        return $fetch(`https://dev.to/api/articles/${username}/${postSlug}`, {
+            headers: {
+                'User-Agent': userAgent
+            }
+        })
+    };
 
 const formatDateTime = (timestamp, humanReadable = false) => {
     try {
@@ -41,7 +59,7 @@ const formatDateTime = (timestamp, humanReadable = false) => {
 
         return {date, year};
     } catch (error) {
-        console.error("Error parsing timestamp:", error.message);
+        // console.error("Error parsing timestamp:", error.message);
         // Return null or some default value to indicate failure
         return {date: null, year: null};
     }
