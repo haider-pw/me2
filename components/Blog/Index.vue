@@ -1,5 +1,9 @@
 <template>
   <section class="not-prose font-mono">
+    <div class="mb-7">
+      <h1 class="text-2xl font-bold tracking-tight text-gray-900"> Top Blog Posts </h1>
+      <h3 class="text-xl italic text-gray-600 pl-2 mt-2">Everyday Coding: From Problems to Solutions</h3>
+    </div>
     <div class="column text-gray-400 text-sm">
       <div class="w-1/12">date</div>
       <div class="flex-1">title</div>
