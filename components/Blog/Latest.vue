@@ -35,6 +35,13 @@
 
 <script setup>
 const $blog = useRuntimeConfig().public.blog;
+
+const articles = await useFetch(`https://dev.to/api/articles?username=${$blog.user}`, {
+  key: 'customFetchingArticlesDev.to'
+})
+
+console.log('articles', articles);
+
 const {
   data: posts,
   pending,
