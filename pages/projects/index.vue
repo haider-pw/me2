@@ -1,6 +1,6 @@
 <template>
   <div>
-<!--    <img class="w-full max-h-[50vh] object-cover" src="/img/projects_banner.webp" alt="projects banner">-->
+    <!--    <img class="w-full max-h-[50vh] object-cover" src="/img/projects_banner.webp" alt="projects banner">-->
     <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
       <div class="mb-7">
         <h1 class="text-2xl font-bold tracking-tight text-gray-900"> My Top Projects </h1>
@@ -20,143 +20,10 @@
 
 <script setup>
 const {data: projects} = await useAsyncData('projects', () => queryContent('/projects').sort({deliveredAt: -1}).find())
-console.log('dataWouldBe', projects);
-// const products = [
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 1,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   }
-//   // More products...
-// ]
+useHead({
+  title: 'My Top Projects | haider.pw',
+  meta: [
+    { name: 'description', content: 'Syed Haider Hassan | Personal Portfolio.' }
+  ],
+})
 </script>

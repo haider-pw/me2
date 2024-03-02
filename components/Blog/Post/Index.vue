@@ -9,6 +9,13 @@ import hljs from 'highlight.js';
 
 const props = defineProps(['post'])
 
+useHead({
+  title: `${props.post.title} | haider.pw`,
+  meta: [
+    { name: 'description', content: props.post.description ?? '' }
+  ],
+})
+
 const md = new MarkdownIt({
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {

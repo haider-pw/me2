@@ -39,4 +39,10 @@
   </div>
 </template>
 <script setup lang="ts">
+useHead({
+  title: 'My Personal Portfolio | haider.pw',
+  meta: [
+    { name: 'description', content: 'Syed Haider Hassan | Personal Portfolio.' }
+  ],
+})
 </script>
