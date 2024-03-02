@@ -23,6 +23,12 @@
 </template>
 <script setup>
 const props = defineProps(['posts'])
+useHead({
+  title: 'Blog Posts | haider.pw',
+  meta: [
+    { name: 'description', content: 'Everyday Coding: From Problems to Solutions' }
+  ],
+})
 </script>
 
 <style scoped>
