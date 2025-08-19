@@ -3,6 +3,13 @@ export default defineNuxtConfig({
     nitro: {
         preset: 'cloudflare-pages',
     },
+    app: {
+        head: {
+            htmlAttrs: {
+                lang: 'en',
+            }
+        }
+    },
     devtools: {enabled: true},
     modules: [
         '@nuxtjs/tailwindcss',
