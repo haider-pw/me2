@@ -1,5 +1,3 @@
-import {SymbolKind} from "vscode-languageserver-types";
-
 interface FetchPostsOrPostParams {
     isOverview: boolean;
     postSlug?: string | null;
