@@ -5,9 +5,14 @@ export default defineNuxtConfig({
         '@nuxtjs/tailwindcss',
         '@nuxt/content',
         '@nuxtjs/device',
+        '@nuxtjs/sitemap',
     ],
     imports: {
         dirs: ['utils/**']
+    },
+    site: {
+        url: 'https://haider.pw',
+        name: 'My Personal Portfolio | haider.pw'
     },
     runtimeConfig: {
         public: {
