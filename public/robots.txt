@@ -1,0 +1,19 @@
+# robots.txt for haider.pw
+
+User-agent: *
+Allow: /
+
+# Disallow common paths that shouldn't be indexed
+Disallow: /_nuxt/
+Disallow: /api/
+Disallow: /.well-known/
+
+# Allow access to CSS and JS files for proper rendering
+Allow: /_nuxt/*.css
+Allow: /_nuxt/*.js
+
+# Sitemap location (update this URL when you create your sitemap)
+Sitemap: https://haider.pw/sitemap.xml
+
+# Crawl-delay (optional - adjust as needed)
+# Crawl-delay: 1
