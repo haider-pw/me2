@@ -1,2 +1,0 @@
-const o=[".tok-k[data-v-08814fda]{color:oklch(60% .2 300)}.tok-v[data-v-08814fda]{color:oklch(60% .15 235)}.tok-prop[data-v-08814fda]{color:oklch(55% .14 235)}.tok-s[data-v-08814fda]{color:oklch(55% .14 150)}.tok-n[data-v-08814fda]{color:oklch(62% .17 40)}.tok-fn[data-v-08814fda]{color:oklch(60% .15 260)}.tok-p[data-v-08814fda]{color:var(--fg-muted)}.dark{color:oklch(80% .12 260)}"];export{o as default};
-//# sourceMappingURL=index-styles.DZHG0sRY.mjs.map

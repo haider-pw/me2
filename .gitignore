@@ -28,3 +28,6 @@ logs
 
 # Yarn
 .yarn/install-state.gz
+
+# Wrangler local state
+.wrangler

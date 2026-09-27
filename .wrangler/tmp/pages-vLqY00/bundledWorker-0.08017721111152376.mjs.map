@@ -1,8 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../dist/_worker.js/index.js"],
-  "sourceRoot": "/home/user/me2/.wrangler/tmp/pages-vLqY00/bundledWorker-0.08017721111152376.mjs",
-  "sourcesContent": ["globalThis._importMeta_={url:\"file:///_entry.js\",env:{}};export{K as default}from\"./chunks/nitro/nitro.mjs\";\n//# sourceMappingURL=index.js.map\n"],
-  "mappings": ";AAAyD,SAAY,SAAY;AAAjF,WAAW,eAAa,EAAC,KAAI,qBAAoB,KAAI,CAAC,EAAC;",
-  "names": []
-}
