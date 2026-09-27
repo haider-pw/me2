@@ -26,11 +26,21 @@ usePageSeo(() => ({
 }))
 
 // Posts are mirrored from dev.to. Point search engines at the original unless its
-// canonical URL is this site (set "Canonical URL" on dev.to to haider.pw/blog/<slug>
+// canonical URL is this page (set "Canonical URL" on dev.to to haider.pw/blog/<slug>
 // to make this page the one that ranks).
+function normalizeUrl(url: string) {
+  try {
+    const u = new URL(url)
+    return `${u.protocol}//${u.host.toLowerCase()}${u.pathname.replace(/\/+$/, '')}`
+  }
+  catch {
+    return null
+  }
+}
 useHead(() => {
   const original = post.value?.canonicalUrl || post.value?.url
-  return original && !original.startsWith(profile.siteUrl)
+  const target = original ? normalizeUrl(original) : null
+  return target && target !== normalizeUrl(`${profile.siteUrl}/blog/${slug.value}`)
     ? { link: [{ rel: 'canonical', href: original, key: 'canonical' }] }
     : {}
 })
