@@ -1,0 +1,56 @@
+# TEMPORARY: connectivity diagnostics for haider.pw (to be removed).
+name: diag-haider
+on:
+  push:
+    branches: [claude/fervent-babbage-p7ckqo]
+    paths: [.github/workflows/diag-haider.yml]
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DNS
+        run: |
+          sudo apt-get -qq install -y dnsutils >/dev/null 2>&1 || true
+          for t in NS A AAAA HTTPS CAA; do echo "== $t"; dig +short haider.pw $t @1.1.1.1; done
+          echo "== www HTTPS"; dig +short www.haider.pw HTTPS @1.1.1.1
+          echo "== A via 8.8.8.8"; dig +short haider.pw A @8.8.8.8
+          echo "== DNSSEC DS"; dig +short haider.pw DS @8.8.8.8
+      - name: TLS handshake + certificate
+        run: |
+          for ip in 188.114.96.6 104.21.95.19 172.67.169.43; do
+            echo "== $ip"
+            echo | timeout 10 openssl s_client -connect $ip:443 -servername haider.pw 2>&1 | grep -E "subject=|issuer=|Protocol|Cipher is|Verify return|errno|error" | head -8
+          done
+      - name: Repeated requests per IP (IPv4 + IPv6)
+        run: |
+          for ip in 188.114.96.6 188.114.97.6 104.21.95.19 172.67.169.43 "[2a06:98c1:3120::6]" "[2606:4700:3034::6815:5f13]"; do
+            ok=0; fail=0; errs=""
+            for i in $(seq 1 30); do
+              out=$(curl -s -o /dev/null -m 10 -w "%{http_code}" --resolve "haider.pw:443:$ip" https://haider.pw/ 2>&1); rc=$?
+              if [ "$out" = "200" ]; then ok=$((ok+1)); else fail=$((fail+1)); errs="$errs rc=$rc/$out"; fi
+            done
+            echo "$ip ok=$ok fail=$fail $errs"
+          done
+      - name: HTTP versions, headers, redirects
+        run: |
+          for v in --http1.1 --http2; do echo "== $v"; curl -sS -m 10 $v -o /dev/null -w "%{http_version} %{http_code} %{time_connect}s %{time_appconnect}s %{time_total}s\n" https://haider.pw/; done
+          echo "== headers"; curl -sSI -m 10 https://haider.pw/
+          echo "== www"; curl -sSI -m 10 https://www.haider.pw/ | head -5
+          echo "== http"; curl -sSI -m 10 http://haider.pw/ | head -5
+          for p in /about /work /projects /contact /blog /sitemap.xml /robots.txt; do curl -s -o /dev/null -m 15 -w "$p %{http_code} %{time_total}s\n" https://haider.pw$p; done
+      - name: Chrome (real browser, with ECH) repeated loads
+        run: |
+          cat > t.mjs <<'JS'
+          import { chromium } from 'playwright'
+          const b = await chromium.launch()
+          let ok = 0, fail = []
+          for (let i = 0; i < 20; i++) {
+            const ctx = await b.newContext(); const p = await ctx.newPage()
+            try { const r = await p.goto('https://haider.pw/?n=' + i, { timeout: 15000 }); r.status() === 200 ? ok++ : fail.push(r.status()) }
+            catch (e) { fail.push(e.message.split('\n')[0]) }
+            await ctx.close()
+          }
+          console.log('chrome ok=' + ok, 'fail=' + JSON.stringify(fail))
+          await b.close()
+          JS
+          npm i -s playwright@1.56.1 >/dev/null 2>&1 && npx playwright install --with-deps chromium >/dev/null 2>&1 && node t.mjs
