@@ -2,7 +2,20 @@
 import type { Project } from '~/data/projects'
 
 /** Screenshot when available, otherwise a generated gradient cover. */
-const props = defineProps<{ project: Project, eager?: boolean }>()
+const props = withDefaults(defineProps<{
+  project: Project
+  eager?: boolean
+  /** Rendered width hint for the browser to pick the right srcset candidate. */
+  sizes?: string
+}>(), { sizes: '(min-width: 1024px) 560px, (min-width: 768px) 50vw, 100vw' })
+
+// Resized copies (480/800/1200px) live next to each screenshot as name-<w>.webp.
+const srcset = computed(() => {
+  const img = props.project.image
+  if (!img?.endsWith('.webp')) return undefined
+  return [480, 800, 1200].map(w => `${img.replace(/\.webp$/, `-${w}.webp`)} ${w}w`).join(', ')
+})
+const src = computed(() => (srcset.value ? props.project.image!.replace(/\.webp$/, '-800.webp') : props.project.image))
 
 // Stable hue per project so generated covers differ but never change.
 const hue = computed(() => [...props.project.slug].reduce((acc, c) => acc + c.charCodeAt(0), 0) % 360)
@@ -12,7 +25,9 @@ const hue = computed(() => [...props.project.slug].reduce((acc, c) => acc + c.ch
   <div class="relative aspect-[16/10] overflow-hidden bg-bg-subtle">
     <img
       v-if="project.image"
-      :src="project.image"
+      :src="src"
+      :srcset="srcset"
+      :sizes="srcset ? sizes : undefined"
       :alt="`${project.title} — screenshot`"
       :loading="eager ? 'eager' : 'lazy'"
       decoding="async"

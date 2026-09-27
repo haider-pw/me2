@@ -16,7 +16,6 @@ function onScroll() {
   })
 }
 useEventListener('scroll', onScroll, { passive: true })
-onMounted(onScroll)
 
 const mobileOpen = ref(false)
 watch(() => route.fullPath, () => { mobileOpen.value = false })
@@ -25,32 +24,22 @@ watch(mobileOpen, (open) => {
 })
 onKeyStroke('Escape', () => { mobileOpen.value = false })
 
-// Sliding highlight that follows the hovered (or active) nav link.
-const navRef = ref<HTMLElement>()
+// Sliding highlight that follows the hovered nav link. The active link gets a
+// static CSS highlight instead, so nothing is measured on load (no forced reflow).
 const linkRefs = ref<HTMLElement[]>([])
 const hovered = ref<number | null>(null)
-const indicator = ref({ left: 0, width: 0, visible: false })
+const indicator = ref({ left: 0, width: 0, visible: false, instant: true })
 
 function updateIndicator() {
-  const activeIndex = navigation.findIndex(item => isActive(item.to))
-  const index = hovered.value ?? activeIndex
-  const el = linkRefs.value[index]
-  if (!el || index < 0) {
+  const el = hovered.value === null ? undefined : linkRefs.value[hovered.value]
+  if (!el) {
     indicator.value.visible = false
     return
   }
-  indicator.value = { left: el.offsetLeft, width: el.offsetWidth, visible: true }
+  // Jump straight to the first hovered link; slide between links after that.
+  indicator.value = { left: el.offsetLeft, width: el.offsetWidth, visible: true, instant: !indicator.value.visible }
 }
-
-// Measure in the next frame so reading offsets doesn't force a reflow mid-hydration.
-const scheduleIndicator = () => requestAnimationFrame(updateIndicator)
-watch([hovered, () => route.path], () => nextTick(scheduleIndicator))
-onMounted(() => {
-  scheduleIndicator()
-  // Recalculate once web fonts have loaded and changed link widths.
-  document.fonts?.ready.then(scheduleIndicator)
-})
-useResizeObserver(navRef, scheduleIndicator)
+watch(hovered, () => requestAnimationFrame(updateIndicator))
 
 const isMac = ref(true)
 onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
@@ -66,11 +55,11 @@ onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
         <AppLogo />
 
         <!-- Desktop navigation -->
-        <nav ref="navRef" aria-label="Primary" class="relative hidden items-center md:flex" @mouseleave="hovered = null">
+        <nav aria-label="Primary" class="relative hidden items-center md:flex" @mouseleave="hovered = null">
           <span
             aria-hidden="true"
-            class="absolute inset-y-0 rounded-full bg-surface-2 ring-1 ring-border transition-all duration-300 ease-out-expo"
-            :class="indicator.visible ? 'opacity-100' : 'opacity-0'"
+            class="absolute inset-y-0 rounded-full bg-surface-2 ring-1 ring-border duration-300 ease-out-expo"
+            :class="[indicator.visible ? 'opacity-100' : 'opacity-0', indicator.instant ? 'transition-opacity' : 'transition-all']"
             :style="{ left: `${indicator.left}px`, width: `${indicator.width}px` }"
           />
           <NuxtLink
@@ -79,10 +68,14 @@ onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
             :ref="(el: any) => { if (el?.$el) linkRefs[i] = el.$el }"
             :to="item.to"
             class="relative z-10 rounded-full px-3 py-1.5 text-sm transition-colors lg:px-3.5"
-            :class="isActive(item.to) ? 'font-medium text-fg' : 'text-fg-muted hover:text-fg'"
+            :class="[
+              isActive(item.to) ? 'font-medium text-fg' : 'text-fg-muted hover:text-fg',
+              isActive(item.to) && !indicator.visible ? 'bg-surface-2 ring-1 ring-border' : '',
+            ]"
             :aria-current="isActive(item.to) ? 'page' : undefined"
             @mouseenter="hovered = i"
             @focus="hovered = i"
+            @blur="hovered = null"
           >
             {{ item.label }}
           </NuxtLink>

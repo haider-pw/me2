@@ -109,6 +109,12 @@ export default defineNuxtConfig({
     },
   },
 
+  experimental: {
+    // Inline the payload on first load (no extra _payload.json request in the
+    // critical path); it's still extracted for client-side navigation.
+    payloadExtraction: 'client',
+  },
+
   typescript: {
     strict: true,
   },
