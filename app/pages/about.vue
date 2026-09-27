@@ -3,7 +3,7 @@ import { education, profile } from '~/data/profile'
 import { skillGroups } from '~/data/skills'
 
 usePageSeo({
-  title: 'About',
+  title: `About ${profile.name} — ${profile.role} in Islamabad`,
   description: `Get to know ${profile.name} — ${profile.role.toLowerCase()} based in ${profile.location}, skills, principles and background.`,
   type: 'profile',
 })

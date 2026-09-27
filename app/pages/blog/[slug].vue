@@ -22,13 +22,28 @@ usePageSeo(() => ({
   image: post.value?.coverImage,
   type: 'article',
   publishedAt: post.value?.publishedAt,
+  author: post.value ? { name: post.value.author.name, url: `https://dev.to/${post.value.author.username}` } : undefined,
 }))
 
-useHead(() => ({
-  link: post.value?.canonicalUrl && !post.value.canonicalUrl.includes('dev.to')
-    ? [{ rel: 'canonical', href: post.value.canonicalUrl, key: 'canonical' }]
-    : [],
-}))
+// Posts are mirrored from dev.to. Point search engines at the original unless its
+// canonical URL is this page (set "Canonical URL" on dev.to to haider.pw/blog/<slug>
+// to make this page the one that ranks).
+function normalizeUrl(url: string) {
+  try {
+    const u = new URL(url)
+    return `${u.protocol}//${u.host.toLowerCase()}${u.pathname.replace(/\/+$/, '')}`
+  }
+  catch {
+    return null
+  }
+}
+useHead(() => {
+  const original = post.value?.canonicalUrl || post.value?.url
+  const target = original ? normalizeUrl(original) : null
+  return target && target !== normalizeUrl(`${profile.siteUrl}/blog/${slug.value}`)
+    ? { link: [{ rel: 'canonical', href: original, key: 'canonical' }] }
+    : {}
+})
 
 // Other posts for the "keep reading" section
 const { data: allPosts } = await useBlogPosts()
