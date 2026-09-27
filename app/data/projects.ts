@@ -1,0 +1,171 @@
+export type ProjectCategory = 'E-commerce' | 'Platform' | 'Community' | 'Website'
+
+export interface Project {
+  slug: string
+  title: string
+  summary: string
+  category: ProjectCategory
+  company: string
+  year: string
+  role?: string
+  url?: string
+  links?: { label: string, url: string }[]
+  image?: string
+  stack: string[]
+  featured?: boolean
+}
+
+/** Rendered in this order (most notable / recent first). */
+export const projects: Project[] = [
+  {
+    slug: 'tilemountain',
+    title: 'Tile Mountain',
+    summary:
+      'Headless storefront for a UK tile retailer. Vue Storefront 1.x on a Magento 2 backend, with the whole catalog indexed in Elasticsearch so pages load without querying Magento each time.',
+    category: 'E-commerce',
+    company: 'Tile Mountain',
+    year: '2021',
+    role: 'Frontend Team Lead',
+    url: 'https://www.tilemountain.co.uk',
+    image: '/img/projects/tilemountain/tilemountain.webp',
+    stack: ['Vue 2', 'Vue Storefront', 'Magento 2', 'Elasticsearch', 'GraphQL'],
+    featured: true,
+  },
+  {
+    slug: 'tiles247',
+    title: 'Tiles247',
+    summary:
+      'The first product the frontend team shipped under my supervision after I joined Tile Mountain. Vue Storefront with Magento 2 as the commerce engine.',
+    category: 'E-commerce',
+    company: 'Tile Mountain',
+    year: '2020',
+    role: 'Frontend Team Lead',
+    url: 'https://www.tiles247.co.uk',
+    image: '/img/projects/tiles247/tiles247.webp',
+    stack: ['Vue 2', 'Vue Storefront', 'Magento 2', 'Elasticsearch'],
+    featured: true,
+  },
+  {
+    slug: 'wallsandfloors',
+    title: 'Walls and Floors',
+    summary:
+      'Another storefront in the Tile Mountain family, built on the same Vue Storefront + Magento 2 + Elasticsearch architecture and shared components.',
+    category: 'E-commerce',
+    company: 'Tile Mountain',
+    year: '2022',
+    role: 'Frontend Team Lead',
+    url: 'https://www.wallsandfloors.co.uk',
+    image: '/img/projects/waf/waf.webp',
+    stack: ['Vue 2', 'Vue Storefront', 'Magento 2', 'Elasticsearch'],
+  },
+  {
+    slug: 'bathroommountain',
+    title: 'Bathroom Mountain',
+    summary:
+      'Bathroom-products storefront sharing the Tile Mountain headless stack: Vue Storefront on Magento 2, with REST and GraphQL integrations and analytics.',
+    category: 'E-commerce',
+    company: 'Tile Mountain',
+    year: '2020',
+    role: 'Frontend Team Lead',
+    url: 'https://bathroommountain.co.uk',
+    image: '/img/projects/bathroommountain/image.webp',
+    stack: ['Vue 2', 'Vue Storefront', 'Magento 2', 'REST API'],
+  },
+  {
+    slug: 'billfolda',
+    title: 'Billfolda',
+    summary:
+      'Equity-crowdfunding platform for an Australian client where investors back offers and buy shares in them. Built with an 8-person team; started on Laravel 5.4 and upgraded to 5.5.',
+    category: 'Platform',
+    company: 'Creativetech Solutions',
+    year: '2018',
+    role: 'Senior Full-Stack Engineer',
+    url: 'https://billfolda.com',
+    image: '/img/projects/billfolda/image.webp',
+    stack: ['PHP', 'Laravel', 'MySQL', 'jQuery', 'Axios'],
+    featured: true,
+  },
+  {
+    slug: 'esic-directory',
+    title: 'ESIC Directory',
+    summary:
+      'Custom CodeIgniter 3 CMS with a page builder behind every public page, investor and company listings, user and role management, FAQs, and year-wise questionnaires for registration. Also built a JavaScript bridge that served dynamic pages into the client’s Weebly site.',
+    category: 'Platform',
+    company: 'Creativetech Solutions',
+    year: '2020',
+    role: 'Senior Full-Stack Engineer',
+    url: 'https://esic.directory',
+    image: '/img/projects/esic/esic_directory.webp',
+    stack: ['PHP', 'CodeIgniter 3', 'MySQL', 'jQuery'],
+    featured: true,
+  },
+  {
+    slug: 'hairlista',
+    title: 'Hairlista',
+    summary:
+      'Rebuilt a Ning-hosted community on Joomla/JomSocial and migrated all of it. I wrote PHP importers that decoded multi-gigabyte JSON exports and brought over users, content, images and videos.',
+    category: 'Community',
+    company: 'Creativetech Solutions',
+    year: '2017',
+    role: 'Lead Developer',
+    url: 'http://hairlista.com',
+    stack: ['PHP', 'Joomla', 'JomSocial', 'MySQL', 'Data migration'],
+  },
+  {
+    slug: 'madcore-social',
+    title: 'Madcore Social',
+    summary:
+      'JomSocial community with a custom plugin for GitHub and Bitbucket OAuth login. It shows a member’s public repositories on their profile and lets them choose which ones stay private.',
+    category: 'Community',
+    company: 'Creativetech Solutions',
+    year: '2017',
+    image: '/img/projects/madcore/madcore_social.svg',
+    stack: ['PHP', 'JomSocial', 'OAuth', 'GitHub API', 'Bitbucket API'],
+  },
+  {
+    slug: 'prahmis',
+    title: 'PRaHMIS',
+    summary:
+      'Patient Record & Hospital Management Information System, the evolution of PHIMS (sold on CodeCanyon). The project started under my supervision; I was team lead and operations manager.',
+    category: 'Platform',
+    company: 'Parexons',
+    year: '2016',
+    role: 'Team Lead',
+    links: [{ label: 'CodeCanyon', url: 'https://codecanyon.net/item/phims/14974225' }],
+    stack: ['PHP', 'CodeIgniter 3', 'MySQL', 'jQuery'],
+  },
+  {
+    slug: 'stytech',
+    title: 'Stytech',
+    summary: 'Corporate website built on WordPress.',
+    category: 'Website',
+    company: 'Parexons',
+    year: '2015',
+    url: 'https://stytech.net',
+    stack: ['PHP', 'WordPress', 'jQuery'],
+  },
+  {
+    slug: 'zorkif-erp',
+    title: 'Zorkif ERP',
+    summary:
+      'ERP for a Saudi company built on CodeIgniter 2. I grew from PHP developer to senior developer, working with a four-person team across modules the client specified.',
+    category: 'Platform',
+    company: 'Smart Bakhtar Solutions',
+    year: '2014',
+    role: 'Senior PHP Developer',
+    stack: ['PHP', 'CodeIgniter 2', 'MySQL', 'Kendo UI'],
+  },
+  {
+    slug: 'khana-e-noor',
+    title: 'Khana-e-Noor',
+    summary: 'As design team lead, I was responsible for the look and layout of the site.',
+    category: 'Website',
+    company: 'Smart Bakhtar Solutions',
+    year: '2013',
+    role: 'Design Team Lead',
+    url: 'https://ken.edu.af',
+    stack: ['HTML', 'CSS', 'JavaScript', 'UI Design'],
+  },
+]
+
+export const projectCategories: ProjectCategory[] = ['E-commerce', 'Platform', 'Community', 'Website']

@@ -1,0 +1,86 @@
+export interface Skill {
+  name: string
+  icon: string
+}
+
+export interface SkillGroup {
+  title: string
+  icon: string
+  skills: Skill[]
+}
+
+export const skillGroups: SkillGroup[] = [
+  {
+    title: 'Frontend',
+    icon: 'lucide:layout-template',
+    skills: [
+      { name: 'Vue.js', icon: 'simple-icons:vuedotjs' },
+      { name: 'Nuxt', icon: 'simple-icons:nuxt' },
+      { name: 'TypeScript', icon: 'simple-icons:typescript' },
+      { name: 'JavaScript', icon: 'simple-icons:javascript' },
+      { name: 'Vue Storefront', icon: 'lucide:shopping-bag' },
+      { name: 'Tailwind CSS', icon: 'simple-icons:tailwindcss' },
+      { name: 'CSS3', icon: 'simple-icons:css' },
+      { name: 'Bootstrap', icon: 'simple-icons:bootstrap' },
+      { name: 'jQuery', icon: 'simple-icons:jquery' },
+    ],
+  },
+  {
+    title: 'Backend & APIs',
+    icon: 'lucide:server',
+    skills: [
+      { name: 'PHP', icon: 'simple-icons:php' },
+      { name: 'Laravel', icon: 'simple-icons:laravel' },
+      { name: 'CodeIgniter', icon: 'simple-icons:codeigniter' },
+      { name: 'REST APIs', icon: 'lucide:webhook' },
+      { name: 'GraphQL', icon: 'simple-icons:graphql' },
+      { name: 'OAuth 2', icon: 'lucide:key-round' },
+      { name: 'PHPUnit', icon: 'lucide:flask-conical' },
+    ],
+  },
+  {
+    title: 'Data & Commerce',
+    icon: 'lucide:database',
+    skills: [
+      { name: 'MySQL', icon: 'simple-icons:mysql' },
+      { name: 'Elasticsearch', icon: 'simple-icons:elasticsearch' },
+      { name: 'Magento 2', icon: 'simple-icons:magento' },
+      { name: 'WordPress', icon: 'simple-icons:wordpress' },
+      { name: 'Joomla', icon: 'simple-icons:joomla' },
+      { name: 'MS SQL Server', icon: 'lucide:database-zap' },
+    ],
+  },
+  {
+    title: 'DevOps & Tooling',
+    icon: 'lucide:workflow',
+    skills: [
+      { name: 'Docker', icon: 'simple-icons:docker' },
+      { name: 'AWS', icon: 'simple-icons:amazonwebservices' },
+      { name: 'DigitalOcean', icon: 'simple-icons:digitalocean' },
+      { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
+      { name: 'Git', icon: 'simple-icons:git' },
+      { name: 'GitLab', icon: 'simple-icons:gitlab' },
+      { name: 'Bitbucket', icon: 'simple-icons:bitbucket' },
+      { name: 'Jira', icon: 'simple-icons:jira' },
+      { name: 'Postman', icon: 'simple-icons:postman' },
+    ],
+  },
+]
+
+/** Shown in the scrolling marquee on the home page. */
+export const marqueeSkills: Skill[] = [
+  { name: 'Vue.js', icon: 'simple-icons:vuedotjs' },
+  { name: 'Nuxt', icon: 'simple-icons:nuxt' },
+  { name: 'TypeScript', icon: 'simple-icons:typescript' },
+  { name: 'Laravel', icon: 'simple-icons:laravel' },
+  { name: 'PHP', icon: 'simple-icons:php' },
+  { name: 'Tailwind CSS', icon: 'simple-icons:tailwindcss' },
+  { name: 'Magento', icon: 'simple-icons:magento' },
+  { name: 'Elasticsearch', icon: 'simple-icons:elasticsearch' },
+  { name: 'MySQL', icon: 'simple-icons:mysql' },
+  { name: 'GraphQL', icon: 'simple-icons:graphql' },
+  { name: 'Docker', icon: 'simple-icons:docker' },
+  { name: 'GitHub Actions', icon: 'simple-icons:githubactions' },
+  { name: 'CodeIgniter', icon: 'simple-icons:codeigniter' },
+  { name: 'Vue Storefront', icon: 'lucide:shopping-bag' },
+]
