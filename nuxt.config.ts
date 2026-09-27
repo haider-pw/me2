@@ -60,6 +60,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Server-only. Set NUXT_RESEND_API_KEY as a secret in Cloudflare Pages.
     resendApiKey: '',
+    // Cloudflare Turnstile secret (NUXT_TURNSTILE_SECRET_KEY). When set, the
+    // contact API rejects submissions without a valid Turnstile token.
+    turnstileSecretKey: '',
+    turnstileVerifyUrl: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
     contact: {
       // Must be an address on a domain verified in Resend (NUXT_CONTACT_FROM).
       from: 'haider.pw <hello@haider.pw>',
@@ -73,6 +77,8 @@ export default defineNuxtConfig({
       apiBase: 'https://dev.to/api',
     },
     public: {
+      // Cloudflare Turnstile site key (NUXT_PUBLIC_TURNSTILE_SITE_KEY), public by design.
+      turnstileSiteKey: '',
       blog: {
         // Your dev.to username. Override with NUXT_PUBLIC_BLOG_USER
         user: 'yuridevat',
