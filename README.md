@@ -8,11 +8,12 @@ Built with **Nuxt 4**, **Tailwind CSS v4** and **TypeScript**, deployed to **Clo
 
 ## Features
 
-- Light and dark themes. Follows the OS setting by default, with a toggle that uses a View Transitions circular reveal.
+- Dark theme by default, with a light theme one click away (the toggle uses a View Transitions circular reveal and remembers the choice).
 - Fully responsive (mobile, tablet, desktop) with scroll-reveal animations, a floating nav with a sliding indicator, and animated page transitions. Motion respects `prefers-reduced-motion`.
 - `/contact` page with a message form (sent server-side via Resend, with validation, honeypot and rate limiting), direct channels and your live local time
 - ⌘K / Ctrl+K (or `/`) command palette to jump to pages, projects and posts, switch the theme, or copy the email address.
 - Blog pulled from the dev.to API. Posts are rendered to HTML on the server with syntax highlighting, a table of contents and a reading-progress bar. Responses are cached for an hour (stale-while-revalidate).
+- Performance: static pages (including home) are prerendered and served from Cloudflare's edge cache; CSS is inlined, fonts are Latin-only and preloaded, icons are CSS masks, and above-the-fold content never waits for JavaScript.
 - SEO: per-page meta and Open Graph tags, JSON-LD `Person` schema, `sitemap.xml` (blog posts included) and `robots.txt`.
 - The Experience page prints as a clean résumé.
 

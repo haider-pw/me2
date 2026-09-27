@@ -22,8 +22,7 @@ const visible = ref(totalChars) // full text on the server / without JS
 const typing = ref(false)
 let timer: ReturnType<typeof setInterval> | undefined
 
-onMounted(() => {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+function startTyping() {
   visible.value = 0
   typing.value = true
   timer = setInterval(() => {
@@ -34,6 +33,13 @@ onMounted(() => {
       clearInterval(timer)
     }
   }, 22)
+}
+
+onMounted(() => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+  // Start once the browser is idle so the animation never competes with page load.
+  const idle = window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 600))
+  idle(startTyping, { timeout: 1500 })
 })
 onBeforeUnmount(() => clearInterval(timer))
 

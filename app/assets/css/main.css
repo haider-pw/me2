@@ -1,10 +1,38 @@
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
-@import "@fontsource/instrument-serif/400.css";
-@import "@fontsource/instrument-serif/400-italic.css";
+/* Self-hosted fonts, Latin subset only (the site has no other scripts). */
+@font-face {
+  font-family: "Geist Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/geist/files/geist-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Geist Mono Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url("@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -230,41 +258,30 @@
 [data-reveal] {
   opacity: 0;
   transform: translate3d(0, 24px, 0);
-  filter: blur(4px);
   transition:
-    opacity 0.8s var(--ease-out-expo),
-    transform 0.8s var(--ease-out-expo),
-    filter 0.8s var(--ease-out-expo);
+    opacity 0.7s var(--ease-out-expo),
+    transform 0.7s var(--ease-out-expo);
   transition-delay: var(--reveal-delay, 0ms);
-  will-change: opacity, transform;
 }
 [data-reveal="visible"] {
   opacity: 1;
   transform: none;
-  filter: none;
 }
-@media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1; transform: none; filter: none; }
-}
-/* Without JS, never hide content */
-html:not(.js) [data-reveal] { opacity: 1; transform: none; filter: none; }
 
 /* ---------------------------------------------------------------------------
  * Page transitions
  * ------------------------------------------------------------------------- */
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.35s var(--ease-out-expo), transform 0.35s var(--ease-out-expo), filter 0.35s var(--ease-out-expo);
+  transition: opacity 0.3s var(--ease-out-expo), transform 0.3s var(--ease-out-expo);
 }
 .page-enter-from {
   opacity: 0;
   transform: translate3d(0, 12px, 0);
-  filter: blur(4px);
 }
 .page-leave-to {
   opacity: 0;
   transform: translate3d(0, -8px, 0);
-  filter: blur(4px);
 }
 
 /* Theme switch uses the View Transitions API (see ThemeToggle.vue) */
@@ -276,109 +293,6 @@ html:not(.js) [data-reveal] { opacity: 1; transform: none; filter: none; }
 ::view-transition-new(root) {
   z-index: 9999;
 }
-
-/* ---------------------------------------------------------------------------
- * Blog article typography (on top of @tailwindcss/typography)
- * ------------------------------------------------------------------------- */
-.prose-article {
-  --tw-prose-body: var(--fg-muted);
-  --tw-prose-headings: var(--fg);
-  --tw-prose-lead: var(--fg-muted);
-  --tw-prose-links: var(--fg);
-  --tw-prose-bold: var(--fg);
-  --tw-prose-counters: var(--fg-subtle);
-  --tw-prose-bullets: var(--accent);
-  --tw-prose-hr: var(--border);
-  --tw-prose-quotes: var(--fg);
-  --tw-prose-quote-borders: var(--accent);
-  --tw-prose-captions: var(--fg-subtle);
-  --tw-prose-code: var(--fg);
-  --tw-prose-pre-code: var(--fg);
-  --tw-prose-pre-bg: var(--surface);
-  --tw-prose-th-borders: var(--border-strong);
-  --tw-prose-td-borders: var(--border);
-  font-size: 1.0625rem;
-  line-height: 1.8;
-}
-.prose-article :where(h2, h3, h4) {
-  scroll-margin-top: 5rem;
-  letter-spacing: -0.02em;
-}
-.prose-article a {
-  text-decoration-color: color-mix(in oklch, var(--accent) 50%, transparent);
-  text-underline-offset: 4px;
-  transition: text-decoration-color 0.2s, color 0.2s;
-}
-.prose-article a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-.prose-article img {
-  border-radius: 1rem;
-  border: 1px solid var(--border);
-}
-.prose-article :not(pre) > code {
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 0.375rem;
-  padding: 0.15em 0.4em;
-  font-size: 0.875em;
-  font-weight: 450;
-}
-.prose-article :not(pre) > code::before,
-.prose-article :not(pre) > code::after {
-  content: none;
-}
-.prose-article pre {
-  position: relative;
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  padding: 1.25rem 1.25rem;
-  font-size: 0.875rem;
-  line-height: 1.7;
-}
-.prose-article pre[data-lang]:not([data-lang="text"])::before {
-  content: attr(data-lang);
-  position: absolute;
-  top: 0.6rem;
-  right: 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--fg-subtle);
-}
-.prose-article blockquote {
-  font-style: normal;
-  background: var(--accent-soft);
-  border-radius: 0 0.75rem 0.75rem 0;
-  padding: 0.5rem 1.25rem;
-}
-
-/* Syntax highlighting (highlight.js classes), light + dark */
-.hljs-comment, .hljs-quote { color: oklch(0.55 0.02 265); font-style: italic; }
-.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: oklch(0.52 0.2 300); }
-.hljs-string, .hljs-regexp, .hljs-addition, .hljs-attribute, .hljs-meta .hljs-string { color: oklch(0.5 0.13 150); }
-.hljs-number, .hljs-symbol, .hljs-bullet, .hljs-link { color: oklch(0.58 0.16 45); }
-.hljs-title, .hljs-section, .hljs-title.function_ { color: oklch(0.5 0.16 255); }
-.hljs-built_in, .hljs-type, .hljs-class .hljs-title, .hljs-title.class_ { color: oklch(0.55 0.13 200); }
-.hljs-variable, .hljs-template-variable, .hljs-attr, .hljs-property, .hljs-params { color: oklch(0.5 0.12 25); }
-.hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: oklch(0.52 0.16 15); }
-.hljs-meta { color: oklch(0.55 0.1 80); }
-.hljs-deletion { color: oklch(0.55 0.2 25); }
-.hljs-emphasis { font-style: italic; }
-.hljs-strong { font-weight: 600; }
-
-.dark .hljs-comment, .dark .hljs-quote { color: oklch(0.6 0.02 265); }
-.dark .hljs-keyword, .dark .hljs-selector-tag, .dark .hljs-literal, .dark .hljs-doctag { color: oklch(0.78 0.14 300); }
-.dark .hljs-string, .dark .hljs-regexp, .dark .hljs-addition, .dark .hljs-attribute, .dark .hljs-meta .hljs-string { color: oklch(0.82 0.13 150); }
-.dark .hljs-number, .dark .hljs-symbol, .dark .hljs-bullet, .dark .hljs-link { color: oklch(0.8 0.13 55); }
-.dark .hljs-title, .dark .hljs-section, .dark .hljs-title.function_ { color: oklch(0.8 0.12 255); }
-.dark .hljs-built_in, .dark .hljs-type, .dark .hljs-class .hljs-title, .dark .hljs-title.class_ { color: oklch(0.82 0.1 200); }
-.dark .hljs-variable, .dark .hljs-template-variable, .dark .hljs-attr, .dark .hljs-property, .dark .hljs-params { color: oklch(0.8 0.1 30); }
-.dark .hljs-tag, .dark .hljs-name, .dark .hljs-selector-id, .dark .hljs-selector-class { color: oklch(0.78 0.13 15); }
-.dark .hljs-meta { color: oklch(0.8 0.1 85); }
-.dark .hljs-deletion { color: oklch(0.72 0.17 25); }
 
 /* ---------------------------------------------------------------------------
  * Print: the Experience page doubles as a printable résumé

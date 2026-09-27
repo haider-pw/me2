@@ -5,8 +5,18 @@ const { navigation, isActive } = useNavigation()
 const palette = useCommandPalette()
 const route = useRoute()
 
-const { y } = useWindowScroll()
-const scrolled = computed(() => y.value > 12)
+// Lightweight scroll check (one read per frame, no computed-style lookups).
+const scrolled = ref(false)
+let scrollFrame = 0
+function onScroll() {
+  if (scrollFrame) return
+  scrollFrame = requestAnimationFrame(() => {
+    scrollFrame = 0
+    scrolled.value = window.scrollY > 12
+  })
+}
+useEventListener('scroll', onScroll, { passive: true })
+onMounted(onScroll)
 
 const mobileOpen = ref(false)
 watch(() => route.fullPath, () => { mobileOpen.value = false })
@@ -32,13 +42,15 @@ function updateIndicator() {
   indicator.value = { left: el.offsetLeft, width: el.offsetWidth, visible: true }
 }
 
-watch([hovered, () => route.path], () => nextTick(updateIndicator))
+// Measure in the next frame so reading offsets doesn't force a reflow mid-hydration.
+const scheduleIndicator = () => requestAnimationFrame(updateIndicator)
+watch([hovered, () => route.path], () => nextTick(scheduleIndicator))
 onMounted(() => {
-  updateIndicator()
+  scheduleIndicator()
   // Recalculate once web fonts have loaded and changed link widths.
-  document.fonts?.ready.then(updateIndicator)
+  document.fonts?.ready.then(scheduleIndicator)
 })
-useResizeObserver(navRef, updateIndicator)
+useResizeObserver(navRef, scheduleIndicator)
 
 const isMac = ref(true)
 onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })

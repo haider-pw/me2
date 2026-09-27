@@ -7,8 +7,6 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@vueuse/nuxt', '@nuxtjs/sitemap'],
 
-  css: ['~/assets/css/main.css'],
-
   vite: {
     plugins: [tailwindcss()],
   },
@@ -32,13 +30,16 @@ export default defineNuxtConfig({
 
   colorMode: {
     classSuffix: '',
-    preference: 'system',
+    // Dark by default; visitors can switch with the toggle (their choice is remembered).
+    preference: 'dark',
     fallback: 'dark',
     storageKey: 'haider-color-mode',
   },
 
   icon: {
-    mode: 'svg',
+    // CSS mode: each icon is defined once as a CSS mask instead of repeating
+    // its full SVG markup everywhere it is used (much smaller HTML).
+    mode: 'css',
     serverBundle: false,
     clientBundle: {
       // Scan .ts too, so icon names referenced in app/data/* get bundled
@@ -80,9 +81,19 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // Static pages: built at deploy time and served from Cloudflare's edge cache.
+    '/': { prerender: true },
     '/about': { prerender: true },
     '/work': { prerender: true },
     '/projects': { prerender: true },
+    // Server-rendered blog pages are cached in memory and revalidated in the background.
+    '/blog': { swr: 60 * 60 },
+    '/blog/**': { swr: 60 * 60 },
+    // Long browser/CDN cache for static files that rarely change.
+    '/img/**': { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } },
+    '/favicon/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
+    '/og-image.png': { headers: { 'cache-control': 'public, max-age=604800' } },
+    '/resume.pdf': { headers: { 'cache-control': 'public, max-age=86400' } },
   },
 
   nitro: {

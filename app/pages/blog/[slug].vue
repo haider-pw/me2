@@ -112,7 +112,7 @@ const shareLinks = computed(() => [
             class="mb-10 w-full rounded-2xl border border-border"
           >
           <!-- eslint-disable-next-line vue/no-v-html -- rendered server-side from markdown with raw HTML disabled -->
-          <div class="prose-article prose max-w-none" v-html="post.html" />
+          <div class="prose-article" v-html="post.html" />
 
           <footer class="mt-16 flex flex-col gap-6 rounded-2xl border border-border bg-surface p-6 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -185,3 +185,111 @@ const shareLinks = computed(() => [
     </section>
   </div>
 </template>
+
+<!-- Unscoped: applies to the server-rendered article HTML (v-html). Only loaded on post pages. -->
+<style>
+/* ---------------------------------------------------------------------------
+ * Blog article typography (self-contained, no typography plugin needed)
+ * ------------------------------------------------------------------------- */
+.prose-article {
+  color: var(--fg-muted);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  overflow-wrap: break-word;
+}
+.prose-article > * + * { margin-top: 1.25em; }
+.prose-article :where(h2, h3, h4) {
+  color: var(--fg);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 5rem;
+}
+.prose-article h2 { font-size: 1.6em; margin-top: 2em; }
+.prose-article h3 { font-size: 1.3em; margin-top: 1.75em; }
+.prose-article h4 { font-size: 1.1em; margin-top: 1.5em; }
+.prose-article :where(h2, h3, h4) + * { margin-top: 0.75em; }
+.prose-article :where(strong, b) { color: var(--fg); font-weight: 600; }
+.prose-article a {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--accent) 50%, transparent);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.2s, color 0.2s;
+}
+.prose-article a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.prose-article :where(ul, ol) { padding-left: 1.5em; }
+.prose-article ul { list-style: disc; }
+.prose-article ol { list-style: decimal; }
+.prose-article li + li { margin-top: 0.4em; }
+.prose-article ul > li::marker { color: var(--accent); }
+.prose-article ol > li::marker { color: var(--fg-subtle); }
+.prose-article hr { border: 0; border-top: 1px solid var(--border); margin: 2.5em 0; }
+.prose-article img { max-width: 100%; height: auto; border-radius: 1rem; border: 1px solid var(--border); }
+.prose-article :not(pre) > code {
+  color: var(--fg);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  padding: 0.15em 0.4em;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+.prose-article pre {
+  position: relative;
+  overflow-x: auto;
+  color: var(--fg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.prose-article pre[data-lang]:not([data-lang="text"])::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0.6rem;
+  right: 0.9rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-subtle);
+}
+.prose-article blockquote {
+  color: var(--fg);
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 0.75rem 0.75rem 0;
+  padding: 0.75rem 1.25rem;
+}
+.prose-article table { width: 100%; border-collapse: collapse; font-size: 0.925em; display: block; overflow-x: auto; }
+.prose-article th { color: var(--fg); font-weight: 600; text-align: left; border-bottom: 1px solid var(--border-strong); padding: 0.5em 0.75em; }
+.prose-article td { border-bottom: 1px solid var(--border); padding: 0.5em 0.75em; }
+
+/* Syntax highlighting (highlight.js classes), light + dark */
+.hljs-comment, .hljs-quote { color: oklch(0.55 0.02 265); font-style: italic; }
+.hljs-keyword, .hljs-selector-tag, .hljs-literal, .hljs-doctag { color: oklch(0.52 0.2 300); }
+.hljs-string, .hljs-regexp, .hljs-addition, .hljs-attribute, .hljs-meta .hljs-string { color: oklch(0.5 0.13 150); }
+.hljs-number, .hljs-symbol, .hljs-bullet, .hljs-link { color: oklch(0.58 0.16 45); }
+.hljs-title, .hljs-section, .hljs-title.function_ { color: oklch(0.5 0.16 255); }
+.hljs-built_in, .hljs-type, .hljs-class .hljs-title, .hljs-title.class_ { color: oklch(0.55 0.13 200); }
+.hljs-variable, .hljs-template-variable, .hljs-attr, .hljs-property, .hljs-params { color: oklch(0.5 0.12 25); }
+.hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: oklch(0.52 0.16 15); }
+.hljs-meta { color: oklch(0.55 0.1 80); }
+.hljs-deletion { color: oklch(0.55 0.2 25); }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 600; }
+
+.dark .hljs-comment, .dark .hljs-quote { color: oklch(0.6 0.02 265); }
+.dark .hljs-keyword, .dark .hljs-selector-tag, .dark .hljs-literal, .dark .hljs-doctag { color: oklch(0.78 0.14 300); }
+.dark .hljs-string, .dark .hljs-regexp, .dark .hljs-addition, .dark .hljs-attribute, .dark .hljs-meta .hljs-string { color: oklch(0.82 0.13 150); }
+.dark .hljs-number, .dark .hljs-symbol, .dark .hljs-bullet, .dark .hljs-link { color: oklch(0.8 0.13 55); }
+.dark .hljs-title, .dark .hljs-section, .dark .hljs-title.function_ { color: oklch(0.8 0.12 255); }
+.dark .hljs-built_in, .dark .hljs-type, .dark .hljs-class .hljs-title, .dark .hljs-title.class_ { color: oklch(0.82 0.1 200); }
+.dark .hljs-variable, .dark .hljs-template-variable, .dark .hljs-attr, .dark .hljs-property, .dark .hljs-params { color: oklch(0.8 0.1 30); }
+.dark .hljs-tag, .dark .hljs-name, .dark .hljs-selector-id, .dark .hljs-selector-class { color: oklch(0.78 0.13 15); }
+.dark .hljs-meta { color: oklch(0.8 0.1 85); }
+.dark .hljs-deletion { color: oklch(0.72 0.17 25); }
+</style>
