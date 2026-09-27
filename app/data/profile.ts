@@ -19,8 +19,9 @@ export const profile = {
   /** Used to compute "years of experience" so it never goes stale. */
   careerStart: '2012-06',
   resumeUrl: '/resume.pdf',
-  /** Drop a square photo at public/img/avatar.webp and set this to '/img/avatar.webp'. */
-  avatar: null as string | null,
+  /** Square portrait (public/img/avatar.webp); a small copy is used in the home hero. */
+  avatar: '/img/avatar.webp' as string | null,
+  avatarSmall: '/img/avatar-sm.webp' as string | null,
   siteUrl: 'https://haider.pw',
 
   tagline: 'I build fast, thoughtful web products — from database to pixel.',

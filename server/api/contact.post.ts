@@ -24,6 +24,25 @@ function escapeHtml(value: string) {
 interface Body extends ContactInput {
   botcheck?: boolean
   elapsed?: number
+  turnstileToken?: string
+}
+
+/** Verifies a Cloudflare Turnstile token server-side. */
+async function verifyTurnstile(url: string, secret: string, token: string, ip?: string) {
+  if (!token) return false
+  try {
+    const res = await $fetch<{ success: boolean, 'error-codes'?: string[] }>(url, {
+      method: 'POST',
+      body: new URLSearchParams({ secret, response: token, ...(ip ? { remoteip: ip } : {}) }),
+      timeout: 8000,
+    })
+    if (!res.success) console.warn('[contact] Turnstile rejected token', res['error-codes'])
+    return res.success
+  }
+  catch (error) {
+    console.error('[contact] Turnstile verification failed', error)
+    return false
+  }
 }
 
 export default defineEventHandler(async (event) => {
@@ -53,6 +72,12 @@ export default defineEventHandler(async (event) => {
   const ip = getRequestHeader(event, 'cf-connecting-ip') ?? getRequestIP(event, { xForwardedFor: true }) ?? 'unknown'
   if (isRateLimited(ip)) {
     throw createError({ statusCode: 429, statusMessage: 'Too many messages, please try again later' })
+  }
+
+  // Cloudflare Turnstile (enabled when NUXT_TURNSTILE_SECRET_KEY is set).
+  if (config.turnstileSecretKey) {
+    const ok = await verifyTurnstile(config.turnstileVerifyUrl, config.turnstileSecretKey, String(body?.turnstileToken ?? ''), ip === 'unknown' ? undefined : ip)
+    if (!ok) throw createError({ statusCode: 403, statusMessage: 'Verification failed' })
   }
 
   // Collapse whitespace/newlines so the name can't break the subject line.

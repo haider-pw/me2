@@ -50,12 +50,18 @@ const facts = [
 
         <aside v-reveal="150" class="lg:sticky lg:top-24 lg:self-start">
           <div class="card overflow-hidden">
-            <div class="relative grid aspect-[4/3] place-items-center overflow-hidden border-b border-border bg-bg-subtle">
+            <div
+              class="group/photo relative grid place-items-center overflow-hidden border-b border-border bg-bg-subtle"
+              :class="profile.avatar ? 'aspect-square' : 'aspect-[4/3]'"
+            >
               <img
                 v-if="profile.avatar"
                 :src="profile.avatar"
                 :alt="`Portrait of ${profile.name}`"
-                class="size-full object-cover"
+                width="500"
+                height="500"
+                decoding="async"
+                class="size-full object-cover transition-transform duration-700 ease-out-expo group-hover/photo:scale-[1.03]"
               >
               <template v-else>
                 <div class="absolute inset-0 bg-[radial-gradient(80%_80%_at_20%_10%,var(--glow-1),transparent_60%),radial-gradient(80%_80%_at_90%_90%,var(--glow-2),transparent_60%)]" aria-hidden="true" />

@@ -3,7 +3,7 @@
     <div v-reveal class="relative isolate overflow-hidden rounded-3xl border border-border bg-surface px-6 py-16 text-center sm:px-12 sm:py-24">
       <div class="absolute inset-0 -z-10" aria-hidden="true">
         <div class="bg-grid absolute inset-0 mask-radial" />
-        <div class="absolute -top-24 left-1/2 size-[420px] -translate-x-1/2 rounded-full bg-[var(--glow-1)] blur-[100px]" />
+        <div class="absolute -top-64 left-1/2 size-[700px] -translate-x-1/2" style="background: radial-gradient(closest-side, var(--glow-1), transparent)" />
       </div>
       <p class="eyebrow justify-center">
         <span class="h-px w-6 bg-accent" aria-hidden="true" />

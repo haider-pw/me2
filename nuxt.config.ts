@@ -7,8 +7,6 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@vueuse/nuxt', '@nuxtjs/sitemap'],
 
-  css: ['~/assets/css/main.css'],
-
   vite: {
     plugins: [tailwindcss()],
   },
@@ -32,13 +30,16 @@ export default defineNuxtConfig({
 
   colorMode: {
     classSuffix: '',
-    preference: 'system',
+    // Dark by default; visitors can switch with the toggle (their choice is remembered).
+    preference: 'dark',
     fallback: 'dark',
     storageKey: 'haider-color-mode',
   },
 
   icon: {
-    mode: 'svg',
+    // CSS mode: each icon is defined once as a CSS mask instead of repeating
+    // its full SVG markup everywhere it is used (much smaller HTML).
+    mode: 'css',
     serverBundle: false,
     clientBundle: {
       // Scan .ts too, so icon names referenced in app/data/* get bundled
@@ -59,6 +60,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Server-only. Set NUXT_RESEND_API_KEY as a secret in Cloudflare Pages.
     resendApiKey: '',
+    // Cloudflare Turnstile secret (NUXT_TURNSTILE_SECRET_KEY). When set, the
+    // contact API rejects submissions without a valid Turnstile token.
+    turnstileSecretKey: '',
+    turnstileVerifyUrl: 'https://challenges.cloudflare.com/turnstile/v0/siteverify',
     contact: {
       // Must be an address on a domain verified in Resend (NUXT_CONTACT_FROM).
       from: 'haider.pw <hello@haider.pw>',
@@ -72,6 +77,8 @@ export default defineNuxtConfig({
       apiBase: 'https://dev.to/api',
     },
     public: {
+      // Cloudflare Turnstile site key (NUXT_PUBLIC_TURNSTILE_SITE_KEY), public by design.
+      turnstileSiteKey: '',
       blog: {
         // Your dev.to username. Override with NUXT_PUBLIC_BLOG_USER
         user: 'yuridevat',
@@ -80,9 +87,19 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
+    // Static pages: built at deploy time and served from Cloudflare's edge cache.
+    '/': { prerender: true },
     '/about': { prerender: true },
     '/work': { prerender: true },
     '/projects': { prerender: true },
+    // Server-rendered blog pages are cached in memory and revalidated in the background.
+    '/blog': { swr: 60 * 60 },
+    '/blog/**': { swr: 60 * 60 },
+    // Long browser/CDN cache for static files that rarely change.
+    '/img/**': { headers: { 'cache-control': 'public, max-age=2592000, stale-while-revalidate=86400' } },
+    '/favicon/**': { headers: { 'cache-control': 'public, max-age=2592000' } },
+    '/og-image.png': { headers: { 'cache-control': 'public, max-age=604800' } },
+    '/resume.pdf': { headers: { 'cache-control': 'public, max-age=86400' } },
   },
 
   nitro: {

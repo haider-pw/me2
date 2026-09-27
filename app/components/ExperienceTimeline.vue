@@ -3,15 +3,26 @@ import type { Experience } from '~/data/experience'
 
 const props = defineProps<{ items: Experience[], compact?: boolean }>()
 
-// The accent line fills as the timeline scrolls through the viewport.
+// The accent line fills as the timeline scrolls through the viewport. Layout is
+// only read while the timeline is on screen, once per animation frame.
 const root = ref<HTMLElement>()
-const { top, height } = useElementBounding(root)
-const { height: viewport } = useWindowSize()
-const progress = computed(() => {
-  if (!height.value) return 0
-  const p = (viewport.value * 0.6 - top.value) / height.value
-  return Math.min(1, Math.max(0, p))
-})
+const progress = ref(0)
+const isVisible = useElementVisibility(root)
+let frame = 0
+function measure() {
+  frame = 0
+  const el = root.value
+  if (!el) return
+  const { top, height } = el.getBoundingClientRect()
+  progress.value = height ? Math.min(1, Math.max(0, (window.innerHeight * 0.6 - top) / height)) : 0
+}
+function schedule() {
+  if (!frame && isVisible.value) frame = requestAnimationFrame(measure)
+}
+useEventListener('scroll', schedule, { passive: true })
+useEventListener('resize', schedule, { passive: true })
+watch(isVisible, visible => visible && schedule())
+onBeforeUnmount(() => frame && cancelAnimationFrame(frame))
 
 const expanded = ref<Set<string>>(new Set(props.compact ? [] : [props.items[0]?.id ?? '']))
 function toggle(id: string) {

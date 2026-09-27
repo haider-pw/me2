@@ -15,7 +15,12 @@ export const CONTACT_LIMITS = {
   emailMax: 254,
   messageMin: 20,
   messageMax: 2000,
+  /** Link-stuffed messages are almost always spam. */
+  maxLinks: 3,
 } as const
+
+const HAS_URL = /(https?:\/\/|www\.)\S+/i
+const ALL_URLS = /(https?:\/\/|www\.)\S+/gi
 
 export interface ContactInput {
   name: string
@@ -36,6 +41,7 @@ export function validateContact(input: ContactInput): ContactErrors {
 
   if (name.length < CONTACT_LIMITS.nameMin) errors.name = 'Please tell me your name.'
   else if (name.length > CONTACT_LIMITS.nameMax) errors.name = 'That name is a bit long.'
+  else if (HAS_URL.test(name) || /[<>]/.test(name)) errors.name = 'Please enter just your name.'
 
   if (!EMAIL_RE.test(email) || email.length > CONTACT_LIMITS.emailMax) {
     errors.email = 'Please enter a valid email, like you@company.com.'
@@ -46,6 +52,9 @@ export function validateContact(input: ContactInput): ContactErrors {
   }
   else if (message.length > CONTACT_LIMITS.messageMax) {
     errors.message = `Please keep it under ${CONTACT_LIMITS.messageMax} characters.`
+  }
+  else if ((message.match(ALL_URLS)?.length ?? 0) > CONTACT_LIMITS.maxLinks) {
+    errors.message = `Please include no more than ${CONTACT_LIMITS.maxLinks} links.`
   }
 
   return errors

@@ -19,6 +19,59 @@ const sendingEnabled = useState('contact-enabled', () =>
   import.meta.server ? !!useRuntimeConfig().resendApiKey : false,
 )
 const route = useRoute()
+const colorMode = useColorMode()
+
+// Cloudflare Turnstile (bot protection). Only active when a site key is configured;
+// "interaction-only" keeps it invisible unless Cloudflare needs a human check.
+interface TurnstileApi {
+  render: (el: HTMLElement, opts: Record<string, unknown>) => string
+  reset: (id?: string) => void
+  remove: (id?: string) => void
+}
+const turnstileSiteKey = useRuntimeConfig().public.turnstileSiteKey
+const turnstileRef = ref<HTMLElement>()
+const turnstileToken = ref('')
+let turnstileId: string | undefined
+
+function loadTurnstile(): Promise<TurnstileApi> {
+  const w = window as unknown as { turnstile?: TurnstileApi }
+  if (w.turnstile) return Promise.resolve(w.turnstile)
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+    script.async = true
+    script.onload = () => (w.turnstile ? resolve(w.turnstile) : reject(new Error('Turnstile unavailable')))
+    script.onerror = () => reject(new Error('Turnstile failed to load'))
+    document.head.appendChild(script)
+  })
+}
+
+async function mountTurnstile() {
+  if (!turnstileSiteKey || !turnstileRef.value || turnstileId) return
+  try {
+    const turnstile = await loadTurnstile()
+    turnstileId = turnstile.render(turnstileRef.value, {
+      'sitekey': turnstileSiteKey,
+      'appearance': 'interaction-only',
+      'theme': colorMode.value === 'dark' ? 'dark' : 'light',
+      'callback': (token: string) => { turnstileToken.value = token },
+      'expired-callback': () => { turnstileToken.value = '' },
+      'error-callback': () => { turnstileToken.value = '' },
+    })
+  }
+  catch (error) {
+    console.warn('[contact] Turnstile could not load', error)
+  }
+}
+
+// Mount the widget whenever its container appears (first load, or after "Send another").
+watch(turnstileRef, el => el && mountTurnstile())
+
+function resetTurnstile() {
+  turnstileToken.value = ''
+  const w = window as unknown as { turnstile?: TurnstileApi }
+  if (turnstileId) w.turnstile?.reset(turnstileId)
+}
 
 // Draft survives navigation/reloads (per-browser convenience only).
 const draft = useLocalStorage(
@@ -73,12 +126,19 @@ async function submit() {
     return
   }
 
+  if (turnstileSiteKey && !turnstileToken.value) {
+    errorDetail.value = 'Please wait a moment while we check you’re not a bot, then press send again.'
+    status.value = 'error'
+    focusResult()
+    return
+  }
+
   status.value = 'sending'
   errorDetail.value = ''
   try {
     await $fetch('/api/contact', {
       method: 'POST',
-      body: { ...draft.value, botcheck: botcheck.value, elapsed: Date.now() - mountedAt },
+      body: { ...draft.value, botcheck: botcheck.value, elapsed: Date.now() - mountedAt, turnstileToken: turnstileToken.value },
       timeout: 15000,
     })
     status.value = 'sent'
@@ -87,9 +147,15 @@ async function submit() {
     const statusCode = (error as { statusCode?: number }).statusCode
     errorDetail.value = statusCode === 429
       ? 'You’ve sent several messages in a short time. Please try again in a few minutes.'
-      : ''
+      : statusCode === 403
+        ? 'We couldn’t verify you’re human. Please try again.'
+        : ''
     status.value = 'error'
     focusResult()
+  }
+  finally {
+    // Turnstile tokens are single-use.
+    resetTurnstile()
   }
 }
 
@@ -102,7 +168,12 @@ function reset() {
 
 // Clear the message from the saved draft once it has gone through.
 watch(status, (value) => {
-  if (value === 'sent') draft.value = { ...draft.value, topic: '', message: '' }
+  if (value !== 'sent') return
+  draft.value = { ...draft.value, topic: '', message: '' }
+  // The form (and the Turnstile container) is replaced by the success screen.
+  const w = window as unknown as { turnstile?: TurnstileApi }
+  if (turnstileId) w.turnstile?.remove(turnstileId)
+  turnstileId = undefined
 })
 
 const inputClass = (field: Field) => [
@@ -263,6 +334,9 @@ const inputClass = (field: Field) => [
             Your draft is saved in this browser until you send it.
           </p>
         </div>
+
+        <!-- Cloudflare Turnstile renders here (usually invisible) -->
+        <div v-if="turnstileSiteKey" ref="turnstileRef" class="empty:hidden" />
 
         <!-- Honeypot: hidden from people, tempting for bots -->
         <input v-model="botcheck" type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true">

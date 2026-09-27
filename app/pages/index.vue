@@ -19,8 +19,16 @@ const stats = [
   { value: experience.length, suffix: '', label: 'Companies' },
 ]
 
-const { data: posts, error: postsError } = await useBlogPosts()
-const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
+// Loaded in the browser so this page can be fully static (prerendered and
+// served from Cloudflare's edge cache) while still showing the latest posts.
+const { data: latestPosts, status: postsStatus } = useFetch<BlogPostSummary[]>('/api/blog', {
+  key: 'home-latest-posts',
+  query: { limit: 3 },
+  server: false,
+  lazy: true,
+  default: () => [],
+})
+const showPosts = computed(() => postsStatus.value === 'pending' || postsStatus.value === 'idle' || latestPosts.value.length > 0)
 </script>
 
 <template>
@@ -33,9 +41,22 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
           <NuxtLink
             v-reveal
             to="/work"
-            class="group inline-flex items-center gap-2.5 rounded-full border border-border bg-surface/70 py-1.5 pr-3 pl-2 text-xs text-fg-muted backdrop-blur transition-colors hover:border-border-strong hover:text-fg sm:text-sm"
+            class="group inline-flex items-center gap-2.5 rounded-full border border-border bg-surface/70 py-1 pr-3 pl-1 text-xs text-fg-muted backdrop-blur transition-colors hover:border-border-strong hover:text-fg sm:text-sm"
           >
-            <span class="relative flex size-2">
+            <span v-if="profile.avatarSmall" class="relative shrink-0">
+              <img
+                :src="profile.avatarSmall"
+                :alt="profile.name"
+                width="28"
+                height="28"
+                class="size-7 rounded-full object-cover ring-2 ring-bg"
+              >
+              <span class="absolute -right-0.5 -bottom-0.5 flex size-2.5" aria-hidden="true">
+                <span class="absolute inline-flex size-full animate-pulse-ring rounded-full bg-accent" />
+                <span class="relative inline-flex size-2.5 rounded-full border-2 border-bg bg-accent" />
+              </span>
+            </span>
+            <span v-else class="relative flex size-2">
               <span class="absolute inline-flex size-full animate-pulse-ring rounded-full bg-accent" />
               <span class="relative inline-flex size-2 rounded-full bg-accent" />
             </span>
@@ -77,7 +98,7 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
         </div>
 
         <div v-reveal="200" class="relative mx-auto w-full max-w-lg lg:mx-0 lg:justify-self-end">
-          <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-gradient-to-tr from-[var(--glow-1)] to-[var(--glow-2)] opacity-60 blur-2xl" aria-hidden="true" />
+          <div class="absolute -inset-16 -z-10 opacity-70" style="background: radial-gradient(closest-side, var(--glow-1), transparent), radial-gradient(closest-side at 80% 80%, var(--glow-2), transparent)" aria-hidden="true" />
           <HeroCodeCard class="lg:rotate-[1.5deg] lg:transition-transform lg:duration-700 lg:ease-out-expo lg:hover:rotate-0" />
         </div>
       </div>
@@ -145,7 +166,7 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
     </section>
 
     <!-- Latest posts -->
-    <section v-if="!postsError && latestPosts.length" class="container-page" aria-labelledby="posts-title">
+    <section v-if="showPosts && postsStatus !== 'error'" class="container-page" aria-labelledby="posts-title">
       <SectionHeader
         eyebrow="Writing"
         description="Notes on problems I’ve solved, tools I use, and lessons learned along the way."
@@ -156,9 +177,15 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
         </template>
       </SectionHeader>
       <div class="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div v-for="(post, i) in latestPosts" :key="post.id" v-reveal="i * 100" :class="i === 2 ? 'md:hidden lg:block' : ''">
-          <BlogCard :post="post" />
-        </div>
+        <template v-if="latestPosts.length">
+          <div v-for="(post, i) in latestPosts" :key="post.id" v-reveal="i * 100" :class="i === 2 ? 'md:hidden lg:block' : ''">
+            <BlogCard :post="post" />
+          </div>
+        </template>
+        <!-- Placeholders while posts load, so the layout doesn't jump -->
+        <template v-else>
+          <div v-for="i in 3" :key="i" class="card h-[26rem] animate-pulse bg-surface-2" :class="i === 3 ? 'md:hidden lg:block' : ''" aria-hidden="true" />
+        </template>
       </div>
     </section>
 
