@@ -3,7 +3,7 @@ import { experience } from '~/data/experience'
 import { education, profile } from '~/data/profile'
 
 usePageSeo({
-  title: 'Experience',
+  title: 'Work experience',
   description: `${profile.name}'s professional journey — ${yearsSince(profile.careerStart)}+ years of full-stack development and team leadership.`,
 })
 

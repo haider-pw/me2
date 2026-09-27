@@ -5,6 +5,7 @@ const props = defineProps<{ error: NuxtError }>()
 const is404 = computed(() => props.error.statusCode === 404)
 
 useHead({ title: is404.value ? 'Page not found' : 'Something went wrong' })
+useSeoMeta({ robots: 'noindex' })
 
 const handleError = () => clearError({ redirect: '/' })
 </script>

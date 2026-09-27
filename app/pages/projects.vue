@@ -4,7 +4,7 @@ import { projectCategories, projects } from '~/data/projects'
 import type { ProjectCategory } from '~/data/projects'
 
 usePageSeo({
-  title: 'Projects',
+  title: 'Portfolio & projects',
   description: `Selected projects by ${profile.name}: headless e-commerce storefronts, SaaS platforms, communities and websites.`,
 })
 
