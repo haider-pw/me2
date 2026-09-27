@@ -24,7 +24,7 @@ const visible = computed(() =>
   <div class="space-y-28 sm:space-y-36">
     <section class="relative" aria-labelledby="projects-title">
       <HeroBackground />
-      <div class="container-page pt-6 sm:pt-12">
+      <div class="container-page pt-10 sm:pt-14">
         <SectionHeader
           as="h1"
           eyebrow="Portfolio"

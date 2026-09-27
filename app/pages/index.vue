@@ -28,7 +28,7 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
     <!-- Hero -->
     <section class="relative" aria-labelledby="hero-title">
       <HeroBackground />
-      <div class="container-page grid grid-cols-1 items-center gap-14 pt-6 sm:pt-12 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:pt-16">
+      <div class="container-page grid grid-cols-1 items-center gap-14 pt-10 sm:pt-14 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:pt-16">
         <div>
           <NuxtLink
             v-reveal
@@ -120,7 +120,7 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
     <!-- Experience -->
     <section class="container-page" aria-labelledby="experience-title">
       <div class="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
-        <div class="lg:sticky lg:top-32 lg:self-start">
+        <div class="lg:sticky lg:top-24 lg:self-start">
           <SectionHeader
             eyebrow="Experience"
             :description="`${years}+ years across product companies and agencies, from intern to team lead.`"

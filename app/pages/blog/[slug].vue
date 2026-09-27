@@ -76,7 +76,7 @@ const shareLinks = computed(() => [
 
     <article ref="articleRef" class="relative">
       <HeroBackground />
-      <header class="container-page max-w-4xl pt-6 sm:pt-12">
+      <header class="container-page max-w-4xl pt-10 sm:pt-14">
         <NuxtLink v-reveal to="/blog" class="group inline-flex items-center gap-1.5 text-sm text-fg-muted transition-colors hover:text-fg">
           <Icon name="lucide:arrow-left" class="size-4 transition-transform group-hover:-translate-x-1" />
           All posts
@@ -152,7 +152,7 @@ const shareLinks = computed(() => [
         </div>
 
         <aside v-if="post.headings.length" class="hidden lg:block">
-          <nav class="sticky top-32" aria-label="Table of contents">
+          <nav class="sticky top-24" aria-label="Table of contents">
             <p class="mb-4 font-mono text-xs tracking-widest text-fg-subtle uppercase">
               On this page
             </p>

@@ -22,7 +22,7 @@ const facts = [
   <div class="space-y-28 sm:space-y-36">
     <section class="relative" aria-labelledby="about-title">
       <HeroBackground />
-      <div class="container-page grid grid-cols-1 gap-12 pt-6 sm:pt-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
+      <div class="container-page grid grid-cols-1 gap-12 pt-10 sm:pt-14 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
         <div>
           <p v-reveal class="eyebrow">
             <span class="h-px w-6 bg-accent" aria-hidden="true" />
@@ -48,7 +48,7 @@ const facts = [
           </div>
         </div>
 
-        <aside v-reveal="150" class="lg:sticky lg:top-32 lg:self-start">
+        <aside v-reveal="150" class="lg:sticky lg:top-24 lg:self-start">
           <div class="card overflow-hidden">
             <div class="relative grid aspect-[4/3] place-items-center overflow-hidden border-b border-border bg-bg-subtle">
               <img

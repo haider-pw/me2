@@ -122,7 +122,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 5rem;
   }
 
   body {
@@ -301,7 +301,7 @@ html:not(.js) [data-reveal] { opacity: 1; transform: none; filter: none; }
   line-height: 1.8;
 }
 .prose-article :where(h2, h3, h4) {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: 5rem;
   letter-spacing: -0.02em;
 }
 .prose-article a {

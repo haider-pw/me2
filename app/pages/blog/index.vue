@@ -39,7 +39,7 @@ function clearFilters() {
   <div class="space-y-28 sm:space-y-36">
     <section class="relative" aria-labelledby="blog-title">
       <HeroBackground />
-      <div class="container-page pt-6 sm:pt-12">
+      <div class="container-page pt-10 sm:pt-14">
         <SectionHeader as="h1" eyebrow="Blog" description="Everyday coding, from problems to solutions. Notes on the web stack I work with every day.">
           <template #title>
             <span id="blog-title">Thoughts, notes & <span class="font-serif font-normal italic">tutorials</span></span>

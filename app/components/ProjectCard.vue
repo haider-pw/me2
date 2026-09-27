@@ -11,7 +11,7 @@ const host = computed(() => {
 </script>
 
 <template>
-  <SpotlightCard as="article" :id="project.slug" class="flex h-full scroll-mt-28 flex-col transition-all duration-500 ease-out-expo hover:-translate-y-1 hover:border-border-strong">
+  <SpotlightCard as="article" :id="project.slug" class="flex h-full scroll-mt-20 flex-col transition-all duration-500 ease-out-expo hover:-translate-y-1 hover:border-border-strong">
     <ProjectCover :project="project" :eager="eager" class="border-b border-border" />
 
     <div class="flex flex-1 flex-col gap-4 p-5 sm:p-6">

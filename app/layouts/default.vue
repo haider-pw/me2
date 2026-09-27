@@ -7,7 +7,7 @@
       Skip to content
     </a>
     <AppHeader />
-    <main id="main" class="flex-1 pt-24 sm:pt-28">
+    <main id="main" class="flex-1 pt-14">
       <slot />
     </main>
     <AppFooter />
