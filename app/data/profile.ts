@@ -14,7 +14,8 @@ export const profile = {
   currentCompany: 'Tile Mountain',
   location: 'Islamabad, Pakistan',
   timezone: 'Asia/Karachi',
-  email: 'haideritx@gmail.com',
+  // Public address shown on the site (forwarded to Gmail by Cloudflare Email Routing).
+  email: 'hello@haider.pw',
   /** Used to compute "years of experience" so it never goes stale. */
   careerStart: '2012-06',
   resumeUrl: '/resume.pdf',
