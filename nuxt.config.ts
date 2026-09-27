@@ -57,16 +57,21 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    // Server-only. Set NUXT_RESEND_API_KEY as a secret in Cloudflare Pages.
+    resendApiKey: '',
+    contact: {
+      // Must be an address on a domain verified in Resend (NUXT_CONTACT_FROM).
+      from: 'haider.pw <contact@haider.pw>',
+      // Where messages are delivered (NUXT_CONTACT_TO).
+      to: 'haideritx@gmail.com',
+      // Override with NUXT_CONTACT_RESEND_API_BASE (useful for local mocks)
+      resendApiBase: 'https://api.resend.com',
+    },
     blog: {
       // Override with NUXT_BLOG_API_BASE (useful for local mocks)
       apiBase: 'https://dev.to/api',
     },
     public: {
-      contact: {
-        // Web3Forms access key (public by design). Set NUXT_PUBLIC_CONTACT_WEB3FORMS_KEY.
-        // When empty, the contact form falls back to opening the visitor's email app.
-        web3formsKey: '',
-      },
       blog: {
         // Your dev.to username. Override with NUXT_PUBLIC_BLOG_USER
         user: 'yuridevat',

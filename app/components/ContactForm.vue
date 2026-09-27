@@ -5,16 +5,19 @@ type Field = 'name' | 'email' | 'message'
 type Status = 'idle' | 'sending' | 'sent' | 'error'
 
 const topics = [
-  { value: 'job', label: 'Job opportunity', icon: 'lucide:briefcase-business' },
-  { value: 'project', label: 'Project', icon: 'lucide:rocket' },
-  { value: 'collab', label: 'Collaboration', icon: 'lucide:handshake' },
-  { value: 'hello', label: 'Just saying hi', icon: 'lucide:hand' },
-] as const
+  { value: 'job', icon: 'lucide:briefcase-business' },
+  { value: 'project', icon: 'lucide:rocket' },
+  { value: 'collab', icon: 'lucide:handshake' },
+  { value: 'hello', icon: 'lucide:hand' },
+].map(t => ({ ...t, label: CONTACT_TOPICS[t.value as ContactTopic] }))
 
-const MESSAGE_MIN = 20
-const MESSAGE_MAX = 2000
+const MESSAGE_MAX = CONTACT_LIMITS.messageMax
 
-const { contact } = useRuntimeConfig().public
+// Whether the server can send (Resend key present). Resolved during SSR so the
+// secret never reaches the browser; only this boolean is serialised.
+const sendingEnabled = useState('contact-enabled', () =>
+  import.meta.server ? !!useRuntimeConfig().resendApiKey : false,
+)
 const route = useRoute()
 
 // Draft survives navigation/reloads (per-browser convenience only).
@@ -24,10 +27,13 @@ const draft = useLocalStorage(
   { initOnMounted: true, mergeDefaults: true },
 )
 
-// Deep-link a topic, e.g. /contact?topic=job
+// Used to filter out bots that submit instantly.
+let mountedAt = 0
 onMounted(() => {
+  mountedAt = Date.now()
+  // Deep-link a topic, e.g. /contact?topic=job
   const topic = String(route.query.topic ?? '')
-  if (topics.some(t => t.value === topic)) draft.value.topic = topic
+  if (topic in CONTACT_TOPICS) draft.value.topic = topic
 })
 
 const botcheck = ref(false)
@@ -37,21 +43,11 @@ const touched = reactive<Record<Field, boolean>>({ name: false, email: false, me
 const resultRef = ref<HTMLElement>()
 const formRef = ref<HTMLFormElement>()
 
-const errors = computed<Record<Field, string>>(() => {
-  const { name, email, message } = draft.value
-  return {
-    name: name.trim().length < 2 ? 'Please tell me your name.' : '',
-    email: !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim()) ? 'Please enter a valid email, like you@company.com.' : '',
-    message: message.trim().length < MESSAGE_MIN
-      ? `A little more detail please — at least ${MESSAGE_MIN} characters.`
-      : message.length > MESSAGE_MAX ? `Please keep it under ${MESSAGE_MAX} characters.` : '',
-  }
-})
+const errors = computed(() => validateContact(draft.value))
 const showError = (field: Field) => touched[field] && !!errors.value[field]
-const isValid = computed(() => !errors.value.name && !errors.value.email && !errors.value.message)
+const isValid = computed(() => Object.keys(errors.value).length === 0)
 
-const topicLabel = computed(() => topics.find(t => t.value === draft.value.topic)?.label)
-const subject = computed(() => `New message from ${draft.value.name.trim() || 'your website'}${topicLabel.value ? ` · ${topicLabel.value}` : ''}`)
+const subject = computed(() => contactSubject(draft.value.name, draft.value.topic))
 const mailtoHref = computed(() =>
   `mailto:${profile.email}?subject=${encodeURIComponent(subject.value)}&body=${encodeURIComponent(draft.value.message)}`,
 )
@@ -71,8 +67,8 @@ async function submit() {
     return
   }
 
-  // No form backend configured yet: hand off to the visitor's email app.
-  if (!contact.web3formsKey) {
+  // Sending isn't configured yet: hand off to the visitor's email app.
+  if (!sendingEnabled.value) {
     window.location.href = mailtoHref.value
     return
   }
@@ -80,39 +76,31 @@ async function submit() {
   status.value = 'sending'
   errorDetail.value = ''
   try {
-    const res = await $fetch<{ success: boolean, message?: string }>('https://api.web3forms.com/submit', {
+    await $fetch('/api/contact', {
       method: 'POST',
-      headers: { Accept: 'application/json' },
-      body: {
-        access_key: contact.web3formsKey,
-        subject: subject.value,
-        from_name: 'haider.pw',
-        name: draft.value.name.trim(),
-        email: draft.value.email.trim(),
-        topic: topicLabel.value ?? 'Not specified',
-        message: draft.value.message.trim(),
-        botcheck: botcheck.value,
-      },
+      body: { ...draft.value, botcheck: botcheck.value, elapsed: Date.now() - mountedAt },
       timeout: 15000,
     })
-    if (!res.success) throw new Error(res.message || 'The message was not accepted.')
     status.value = 'sent'
   }
   catch (error) {
-    errorDetail.value = error instanceof Error ? error.message : ''
+    const statusCode = (error as { statusCode?: number }).statusCode
+    errorDetail.value = statusCode === 429
+      ? 'You’ve sent several messages in a short time. Please try again in a few minutes.'
+      : ''
     status.value = 'error'
     focusResult()
   }
 }
 
 function reset() {
-  draft.value = { name: '', email: '', topic: '', message: '' }
+  draft.value = { name: draft.value.name, email: draft.value.email, topic: '', message: '' }
   touched.name = touched.email = touched.message = false
   status.value = 'idle'
-  nextTick(() => formRef.value?.querySelector<HTMLElement>('#contact-name')?.focus())
+  nextTick(() => formRef.value?.querySelector<HTMLElement>('#contact-message')?.focus())
 }
 
-// Clear the saved draft once a message has gone through.
+// Clear the message from the saved draft once it has gone through.
 watch(status, (value) => {
   if (value === 'sent') draft.value = { ...draft.value, topic: '', message: '' }
 })
@@ -170,7 +158,7 @@ const inputClass = (field: Field) => [
               <a :href="mailtoHref" class="font-medium text-fg underline underline-offset-4">send it from your email app</a>
               instead.
             </p>
-            <p v-if="errorDetail" class="mt-1 font-mono text-xs text-fg-subtle">
+            <p v-if="errorDetail" class="mt-1 text-xs text-fg-subtle">
               {{ errorDetail }}
             </p>
           </div>
@@ -290,7 +278,7 @@ const inputClass = (field: Field) => [
               Sending…
             </template>
             <template v-else>
-              {{ contact.web3formsKey ? 'Send message' : 'Continue in email app' }}
+              {{ sendingEnabled ? 'Send message' : 'Continue in email app' }}
               <Icon name="lucide:send" class="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </template>
           </button>
