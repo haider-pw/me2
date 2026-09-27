@@ -1,0 +1,23 @@
+# TEMPORARY: connectivity diagnostics for haider.pw (to be removed).
+name: diag-haider
+on:
+  push:
+    branches: [claude/fervent-babbage-p7ckqo]
+    paths: [.github/workflows/diag-haider.yml]
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: DNS (ECH present?)
+        run: |
+          for r in 1.1.1.1 8.8.8.8; do echo "== HTTPS via $r"; dig +short haider.pw HTTPS @$r; done
+          echo "== A"; dig +short haider.pw A @1.1.1.1
+      - name: Requests
+        continue-on-error: true
+        run: |
+          for ip in 104.21.95.19 172.67.169.43 188.114.96.6; do
+            ok=0; fail=0
+            for i in $(seq 1 20); do c=$(curl -s -o /dev/null -m 10 -w "%{http_code}" --resolve "haider.pw:443:$ip" https://haider.pw/); [ "$c" = 200 ] && ok=$((ok+1)) || fail=$((fail+1)); done
+            echo "$ip ok=$ok fail=$fail"
+          done
+          curl -sSI -m 10 https://haider.pw/ | head -20
