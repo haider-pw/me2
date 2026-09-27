@@ -14,6 +14,7 @@ useHead({
         'name': profile.name,
         'jobTitle': profile.currentTitle,
         'url': profile.siteUrl,
+        ...(profile.avatar ? { image: `${profile.siteUrl}${profile.avatar}` } : {}),
         'email': `mailto:${profile.email}`,
         'address': { '@type': 'PostalAddress', 'addressLocality': 'Islamabad', 'addressCountry': 'PK' },
         'sameAs': profile.socials.map(s => s.url),

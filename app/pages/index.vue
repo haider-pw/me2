@@ -33,9 +33,22 @@ const latestPosts = computed(() => (posts.value ?? []).slice(0, 3))
           <NuxtLink
             v-reveal
             to="/work"
-            class="group inline-flex items-center gap-2.5 rounded-full border border-border bg-surface/70 py-1.5 pr-3 pl-2 text-xs text-fg-muted backdrop-blur transition-colors hover:border-border-strong hover:text-fg sm:text-sm"
+            class="group inline-flex items-center gap-2.5 rounded-full border border-border bg-surface/70 py-1 pr-3 pl-1 text-xs text-fg-muted backdrop-blur transition-colors hover:border-border-strong hover:text-fg sm:text-sm"
           >
-            <span class="relative flex size-2">
+            <span v-if="profile.avatarSmall" class="relative shrink-0">
+              <img
+                :src="profile.avatarSmall"
+                :alt="profile.name"
+                width="28"
+                height="28"
+                class="size-7 rounded-full object-cover ring-2 ring-bg"
+              >
+              <span class="absolute -right-0.5 -bottom-0.5 flex size-2.5" aria-hidden="true">
+                <span class="absolute inline-flex size-full animate-pulse-ring rounded-full bg-accent" />
+                <span class="relative inline-flex size-2.5 rounded-full border-2 border-bg bg-accent" />
+              </span>
+            </span>
+            <span v-else class="relative flex size-2">
               <span class="absolute inline-flex size-full animate-pulse-ring rounded-full bg-accent" />
               <span class="relative inline-flex size-2 rounded-full bg-accent" />
             </span>
