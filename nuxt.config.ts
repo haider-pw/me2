@@ -62,6 +62,11 @@ export default defineNuxtConfig({
       apiBase: 'https://dev.to/api',
     },
     public: {
+      contact: {
+        // Web3Forms access key (public by design). Set NUXT_PUBLIC_CONTACT_WEB3FORMS_KEY.
+        // When empty, the contact form falls back to opening the visitor's email app.
+        web3formsKey: '',
+      },
       blog: {
         // Your dev.to username. Override with NUXT_PUBLIC_BLOG_USER
         user: 'yuridevat',

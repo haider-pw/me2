@@ -10,6 +10,7 @@ Built with **Nuxt 4**, **Tailwind CSS v4** and **TypeScript**, deployed to **Clo
 
 - Light and dark themes. Follows the OS setting by default, with a toggle that uses a View Transitions circular reveal.
 - Fully responsive (mobile, tablet, desktop) with scroll-reveal animations, a floating nav with a sliding indicator, and animated page transitions. Motion respects `prefers-reduced-motion`.
+- `/contact` page with a message form (Web3Forms), direct channels and your live local time
 - ⌘K / Ctrl+K (or `/`) command palette to jump to pages, projects and posts, switch the theme, or copy the email address.
 - Blog pulled from the dev.to API. Posts are rendered to HTML on the server with syntax highlighting, a table of contents and a reading-progress bar. Responses are cached for an hour (stale-while-revalidate).
 - SEO: per-page meta and Open Graph tags, JSON-LD `Person` schema, `sitemap.xml` (blog posts included) and `robots.txt`.
@@ -38,6 +39,7 @@ To re-theme the site, edit `--accent` and `--accent-2` in `app/assets/css/main.c
 | --- | --- | --- |
 | `NUXT_PUBLIC_BLOG_USER` | `yuridevat` | dev.to username whose posts are shown |
 | `NUXT_BLOG_API_BASE` | `https://dev.to/api` | dev.to API base URL (point it at a mock for offline development) |
+| `NUXT_PUBLIC_CONTACT_WEB3FORMS_KEY` | _(empty)_ | [Web3Forms](https://web3forms.com) access key for the contact form (public by design). Without it, the form opens the visitor's email app instead. |
 
 ## Development
 

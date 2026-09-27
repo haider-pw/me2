@@ -84,7 +84,7 @@ onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
             @click="palette.show()"
           >
             <Icon name="lucide:search" class="size-3.5" />
-            <span>Search</span>
+            <span class="md:hidden lg:inline">Search</span>
             <kbd class="rounded-full border border-border bg-surface-2 px-1.5 py-0.5 font-mono text-[10px]">{{ isMac ? '⌘' : 'Ctrl' }} K</kbd>
           </button>
           <button

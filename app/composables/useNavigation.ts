@@ -10,6 +10,7 @@ export const navigation: NavItem[] = [
   { label: 'Experience', to: '/work', icon: 'lucide:briefcase-business' },
   { label: 'Projects', to: '/projects', icon: 'lucide:layers' },
   { label: 'Blog', to: '/blog', icon: 'lucide:pen-line' },
+  { label: 'Contact', to: '/contact', icon: 'lucide:send' },
 ]
 
 export function useNavigation() {
