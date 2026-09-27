@@ -61,7 +61,7 @@ export default defineNuxtConfig({
     resendApiKey: '',
     contact: {
       // Must be an address on a domain verified in Resend (NUXT_CONTACT_FROM).
-      from: 'haider.pw <contact@haider.pw>',
+      from: 'haider.pw <hello@haider.pw>',
       // Where messages are delivered (NUXT_CONTACT_TO).
       to: 'haideritx@gmail.com',
       // Override with NUXT_CONTACT_RESEND_API_BASE (useful for local mocks)

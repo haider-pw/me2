@@ -40,7 +40,7 @@ To re-theme the site, edit `--accent` and `--accent-2` in `app/assets/css/main.c
 | `NUXT_PUBLIC_BLOG_USER` | `yuridevat` | dev.to username whose posts are shown |
 | `NUXT_BLOG_API_BASE` | `https://dev.to/api` | dev.to API base URL (point it at a mock for offline development) |
 | `NUXT_RESEND_API_KEY` | _(empty)_ | **Secret.** [Resend](https://resend.com) API key used by `/api/contact`. Without it, the form opens the visitor's email app instead. |
-| `NUXT_CONTACT_FROM` | `haider.pw <contact@haider.pw>` | Sender address; must be on a domain verified in Resend |
+| `NUXT_CONTACT_FROM` | `haider.pw <hello@haider.pw>` | Sender address; must be on a domain verified in Resend |
 | `NUXT_CONTACT_TO` | `haideritx@gmail.com` | Where contact messages are delivered |
 
 ## Development
