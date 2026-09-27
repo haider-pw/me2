@@ -41,7 +41,7 @@ To re-theme the site, edit `--accent` and `--accent-2` in `app/assets/css/main.c
 
 ## Development
 
-Requires Node 22.19+ (pinned to 22.22.2 in `.nvmrc`) and Yarn 4 (via Corepack).
+Requires Node 22.19+ or 24.11+ (pinned to 24.21.0 in `.nvmrc`) and Yarn 4 (via Corepack).
 
 ```bash
 corepack enable
