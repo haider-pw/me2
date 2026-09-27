@@ -20,9 +20,11 @@ logs
 *.iml
 .vscode
 
-#JUST TEST sddsssddsddsdfs
 
 # Local env files
 .env
 .env.*
 !.env.example
+
+# Yarn
+.yarn/install-state.gz
