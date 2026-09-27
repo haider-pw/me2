@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Project } from '~/data/projects'
 
-const props = defineProps<{ project: Project, eager?: boolean }>()
+const props = defineProps<{ project: Project, eager?: boolean, sizes?: string }>()
 
 const primaryLink = computed(() => props.project.url ?? props.project.links?.[0]?.url)
 const host = computed(() => {
@@ -12,7 +12,7 @@ const host = computed(() => {
 
 <template>
   <SpotlightCard as="article" :id="project.slug" class="flex h-full scroll-mt-20 flex-col transition-all duration-500 ease-out-expo hover:-translate-y-1 hover:border-border-strong">
-    <ProjectCover :project="project" :eager="eager" class="border-b border-border" />
+    <ProjectCover :project="project" :eager="eager" :sizes="sizes" class="border-b border-border" />
 
     <div class="flex flex-1 flex-col gap-4 p-5 sm:p-6">
       <div class="flex items-center justify-between gap-3 font-mono text-xs text-fg-subtle">

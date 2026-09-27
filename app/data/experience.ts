@@ -43,7 +43,7 @@ export const experience: Experience[] = [
     location: 'Islamabad',
     start: '2016-05',
     end: '2020-05',
-    logo: '/img/work/creative.svg',
+    logo: '/img/work/creative.webp',
     summary:
       'Built and maintained PHP products for international clients using CodeIgniter 3 and Laravel 5, plus custom Joomla and JomSocial work.',
     highlights: [
@@ -62,7 +62,7 @@ export const experience: Experience[] = [
     location: 'Peshawar',
     start: '2014-12',
     end: '2016-05',
-    logo: '/img/work/parexons.webp',
+    logo: '/img/work/parexons-96.webp',
     summary:
       'Joined as a senior PHP developer and grew into team lead, delivering everything from small websites to large products — mostly CodeIgniter on MySQL.',
     highlights: [

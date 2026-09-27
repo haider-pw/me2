@@ -63,7 +63,7 @@ const visible = computed(() =>
           leave-to-class="opacity-0 scale-95"
         >
           <div v-for="(project, i) in visible" :key="project.slug">
-            <ProjectCard :project="project" :eager="i < 3" />
+            <ProjectCard :project="project" :eager="i < 3" sizes="(min-width: 1024px) 370px, (min-width: 768px) 50vw, 100vw" />
           </div>
         </TransitionGroup>
       </div>
